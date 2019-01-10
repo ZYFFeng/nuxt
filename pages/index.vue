@@ -37,10 +37,7 @@ export default {
         code: 'H_1'
       }
     }
-    const { list } = await $axios.$get(
-      'https://shop.wangoon.com/mall/home/banner',
-      params
-    )
+    const { list } = await $axios.$get('https://shop.wangoon.com/mall/home/banner', params)
     return { bannerList: list }
   },
   mounted() {

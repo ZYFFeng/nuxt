@@ -6,7 +6,7 @@
       </div>
       <div class="navigation-centre">
         <img 
-          src="../assets/img/logo.png" 
+          src="../assets/img/logo.png"
           alt="">
       </div>
       <div class="navigation-right">
@@ -17,10 +17,11 @@
     </div>
     <div class="nav-menu">
       <ul class="menu-list">
-        <li 
-          v-for="item in menuLsit"
-          :key="item.menu_name" 
-          class="menu-item">{{ item.menu_name }}</li>
+        <nuxt-link 
+          v-for="item in menuLsit" 
+          :key="item.menu_name"
+          to="/list">
+        <li class="menu-item">{{ item.menu_name }}</li></nuxt-link>
       </ul>
     </div>
   </div>
@@ -35,9 +36,7 @@ export default {
     }
   },
   async mounted() {
-    const { data } = await this.$axios.get(
-      'https://shop.wangoon.com/api/NetworkApi/menu_list_api'
-    )
+    const { data } = await this.$axios.get('https://shop.wangoon.com/api/NetworkApi/menu_list_api')
     this.menuLsit = data.resData
   }
 }
