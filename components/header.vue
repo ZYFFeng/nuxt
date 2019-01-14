@@ -84,6 +84,9 @@
         :key="item" 
         alt="">
     </div>
+    <div 
+      v-show="menuIsShow" 
+      class="menu-bg"/>
   </div>
 </template>
 
@@ -139,6 +142,15 @@ export default {
 </script>
 
 <style socped lang="scss">
+.menu-bg{
+  background: rgba(0,0,0,.5);
+  width: 100%;
+  height: calc(100vh - 150px);
+  position: absolute;
+  left: -1px;
+  top: 150px;
+  z-index: 9;
+}
 .nav-menu > .menu-list {
   padding: 0 15vw;
   display: flex;
@@ -177,7 +189,7 @@ export default {
     position:absolute;
     background: #ffffff;
     width: 70vw;
-    z-index: 9;
+    z-index: 10;
     left: 50%;
     padding: 20px;
     transform: translateX(-50%);
