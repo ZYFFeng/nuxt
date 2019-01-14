@@ -8,10 +8,14 @@
         v-for="item in bannerList" 
         :key="item.url">
         <img 
-          :src="item.img" 
+          :src="item.img"
           class="carousel-img">
       </el-carousel-item>
     </el-carousel>
+    <PicturesContainer
+      bnt-type
+      pictures-width="50%"
+    />
   </div>
 </template>
 <style>
@@ -25,7 +29,11 @@
 </style>
 
 <script>
+import PicturesContainer from '@/components/PicturesContainer'
 export default {
+  components: {
+    PicturesContainer
+  },
   data() {
     return {
       bannerH: 200
@@ -52,7 +60,7 @@ export default {
   },
   methods: {
     setBannerH() {
-      this.bannerH = document.body.clientWidth / 2.5
+      this.bannerH = document.body.clientWidth / 2.7
     }
   }
 }

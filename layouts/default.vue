@@ -1,16 +1,14 @@
 <template>
   <div>
     <el-container>
-      <el-header>
-        <HeadNoption class="hidden-xs-only"/>
-      </el-header>
+      <HeadNoption/>
       <el-main><nuxt/></el-main>
       <el-footer>Footer</el-footer>
     </el-container>
   </div>
 </template>
 <script>
-import HeadNoption from '@/components/header'
+import HeadNoption from '@/components/Header'
 export default {
   components: {
     HeadNoption
@@ -18,17 +16,12 @@ export default {
 }
 </script>
 <style lang="scss" socped>
-.el-header,
-.el-main,
-.el-footer {
-  padding: 0;
+@font-face {
+	font-family: MontserratRegular;
+	src:url('../assets/font/Montserrat-Regular.ttf');
 }
-.el-header {
-  height: auto !important;
-}
-html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
+body, html {
+	font-family:'MontserratRegular';
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
@@ -43,34 +36,9 @@ html {
 *:after {
   box-sizing: border-box;
   margin: 0;
+  padding: 0;
 }
-
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
+li {
+  list-style: none;
 }
 </style>

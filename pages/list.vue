@@ -8,7 +8,7 @@
         <img 
           :src="item.LargeImage" 
           alt="">
-        <h3>{{ item.title }}</h3>
+        <h3>{{ item.title }}1111111111</h3>
       </div>
     </div>
     <el-pagination
