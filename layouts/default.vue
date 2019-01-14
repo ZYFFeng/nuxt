@@ -8,7 +8,7 @@
   </div>
 </template>
 <script>
-import HeadNoption from '@/components/Header'
+import HeadNoption from '@/components/Header/index.vue'
 export default {
   components: {
     HeadNoption
