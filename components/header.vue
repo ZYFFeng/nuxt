@@ -18,24 +18,22 @@
     </div>
     <div class="nav-menu">
       <ul class="menu-list">
-        <li><span>HOME</span></li>
-        <li 
+        <li>HOME</li>
+        <nuxt-link
           v-for="item in menuLsit"
           :key="item.menu_name" 
-          class="menu-item"
-          @mouseenter="handleMenuList(item)"
-          @mouseleave="handleMouseOut"> 
-          <nuxt-link
-            to="/list"
-          >
-            <span>{{ item.menu_name }}</span>
-          </nuxt-link>
-        </li>
+          to="/list"
+        >
+          <li 
+            class="menu-item"
+            @mouseenter="handleMenuList(item)"
+            @mouseleave="handleMouseOut">{{ item.menu_name }}</li></nuxt-link>
       </ul>
       
       <div 
         v-show="menuIsShow" 
         class="menu-child--list"
+        @mouseenter="handleMouseenter"
         @mouseleave="handleMouseOut">
         <div class="menu-chid-item">
           <ul v-if="menuName !== 'BRANDS' && menuName !== 'DEALS'">
@@ -99,7 +97,8 @@ export default {
       menuChildLsit: [],
       menuChildImg: [],
       LazyImg: [],
-      menuIsShow: false
+      menuIsShow: false,
+      timeOut: null
     }
   },
   watch: {
@@ -116,18 +115,24 @@ export default {
   },
   methods: {
     handleMenuList (item) {
-      this.menuName = item.menu_name
       this.menuIsShow = true
-     if ( item.menu_name !== 'BRANDS' ) {
-      this.menuChildLsit = item.child_menu
-      this.menuChildImg = item.child_img
-     } else {
-      this.menuChildImg = item.child_img
-     }
+      this.menuName = item.menu_name
+      if ( item.menu_name !== 'BRANDS' ) {
+        this.menuChildLsit = item.child_menu
+        this.menuChildImg = item.child_img
+      } else {
+        this.menuChildImg = item.child_img
+      }
+    },
+    handleMouseenter () {
+      clearTimeout(this.timeOut)  
+      this.timeOut = null
+      this.menuIsShow = true
     },
     handleMouseOut () {
-      this.menuIsShow = false
-      console.log(11111111111111111)
+      this.timeOut = setTimeout(_ => {
+        this.menuIsShow = false
+      }, 5)
     }
   },
 }
@@ -142,11 +147,9 @@ export default {
   li {
     list-style: none;
     line-height: 60px;
+    color: #bfa69a;
     font-weight: 700;
     font-size: 16px;
-    span {
-      color: #bfa69a;
-    }
   }
 }
 .nav-navigation {
