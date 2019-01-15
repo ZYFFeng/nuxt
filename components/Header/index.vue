@@ -1,28 +1,30 @@
 <template>
   <div class="header">
-    <div class="nav-navigation hidden-xs-only" >
-      <div class="navigation-left">
-        <i class="el-icon-search"/>
+    <div class="hidden-xs-only">
+      <div class="nav-navigation" >
+        <div class="navigation-left">
+          <i class="el-icon-search"/>
+        </div>
+        <div class="navigation-centre">
+          <img 
+            src="../../assets/img/logo.png"
+            alt="">
+        </div>
+        <div class="navigation-right">
+          <i class="el-icon-goods"/>
+          <i class="el-icon-sold-out"/>
+          <i class="el-icon-star-on"/>
+        </div>
       </div>
-      <div class="navigation-centre">
-        <img 
-          src="../../assets/img/logo.png"
-          alt="">
-      </div>
-      <div class="navigation-right">
-        <i class="el-icon-goods"/>
-        <i class="el-icon-sold-out"/>
-        <i class="el-icon-star-on"/>
-      </div>
+      <Menu
+        :menuName="menuName"
+        :menuLsit="menuLsit"
+        :childImg="childImg"
+        @MenuList="handleMenuList"
+        @MouseOut="handleMouseOut"
+        @childMouseover="handleChildMouseover"
+      />
     </div>
-    <Menu
-      :menuName="menuName"
-      :menuLsit="menuLsit"
-      :childImg="childImg"
-      @MenuList="handleMenuList"
-      @MouseOut="handleMouseOut"
-      @childMouseover="handleChildMouseover"
-    />
     <div 
       class="img-Lazy" 
       style="display:none">

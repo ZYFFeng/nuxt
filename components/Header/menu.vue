@@ -113,7 +113,9 @@ export default {
   justify-content: space-around;
   background: #150d0f;
   .menu-item {
+    flex: 1;
     a {
+      text-align: center;
       list-style: none;
       line-height: 60px;
       color: #bfa69a;
@@ -170,23 +172,13 @@ export default {
     position: relative;
     display: flex;
     justify-content: center;
+    border-right: .5px #151515 solid;
     img{
-    height: 100px !important;
-   }
-   &:before{
-    content: '';
-    height: 77px;
-    width: .5px;
-    position: absolute;
-    right: 0;
-    background: #585858;
-    z-index: 9;
-    top: 50%;
-    transform: translateY(-50%);
-   }
-   &:last-child:before{
-     display: none;
-   }
+      height: 100px !important;
+    }
+    &:last-child{
+      border-right: none;
+    }
   }
 }
 </style>
