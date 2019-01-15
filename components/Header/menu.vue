@@ -115,12 +115,14 @@ export default {
   .menu-item {
     flex: 1;
     a {
-      text-align: center;
+      width: 100%;
       list-style: none;
       line-height: 60px;
       color: #bfa69a;
       font-weight: 700;
       font-size: 16px;
+      display: inline-block;
+      text-align: center;
     }
     .child-item {
       display: flex;

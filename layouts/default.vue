@@ -1,11 +1,16 @@
 <template>
-  <div>
-    <el-container>
-      <HeadNoption/>
-      <el-main><nuxt/></el-main>
-      <el-footer>Footer</el-footer>
-    </el-container>
-  </div>
+  <v-app>
+    <HeadNoption/>
+    <el-main><nuxt/></el-main>
+    <v-footer 
+      dark 
+      class="pa-3"
+      style="font-size:14px"
+    >
+      <v-spacer/>
+      <div>&copy;2014 - 2019 Dream Pair Shoes. All Rights Reserved.</div>
+    </v-footer>
+  </v-app>
 </template>
 <script>
 import HeadNoption from '@/components/Header/index.vue'

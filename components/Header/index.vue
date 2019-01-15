@@ -1,9 +1,13 @@
 <template>
   <div class="header">
-    <div class="hidden-xs-only">
-      <div class="nav-navigation" >
+    <div>
+      <div class="nav-navigation hidden-xs-only" >
         <div class="navigation-left">
-          <i class="el-icon-search"/>
+          <v-text-field
+            v-model="email"
+            label="E-mail"
+            required
+          />
         </div>
         <div class="navigation-centre">
           <img 
@@ -16,15 +20,51 @@
           <i class="el-icon-star-on"/>
         </div>
       </div>
+      <div class="mobile-navigation">
+        <div>
+          <v-toolbar-side-icon 
+            style="margin:0"
+            @click="drawer = !drawer"
+          />
+          <v-btn 
+            style="margin:0"
+            icon
+            @click="handleSearchControl">
+            <v-icon>search</v-icon>
+          </v-btn>
+        </div>
+        <div class="mobile-centre">
+          
+          <v-text-field
+            v-if="searchControl"
+            height="20px"
+            label="SEARCH"
+            style="box-shadow: none;"
+            clearable
+            solo
+            append-icon="search"
+          />  
+          <img 
+            v-else 
+            src="../../assets/img/logo.png" 
+            alt="">
+        </div>
+      </div>
       <Menu
-        :menuName="menuName"
         :menuLsit="menuLsit"
         :childImg="childImg"
-        @MenuList="handleMenuList"
+        :menuName="menuName"
+        class=" hidden-xs-only"
+        @MenuList="handleMenuList" 
         @MouseOut="handleMouseOut"
         @childMouseover="handleChildMouseover"
       />
     </div>
+    <MobileMenu
+      :menu-lsit="menuLsit"
+      :drawer="drawer"
+      @drawerStatus="handleChangeDrowse"
+    />
     <div 
       class="img-Lazy" 
       style="display:none">
@@ -42,10 +82,12 @@
 
 <script>
 import Menu from './menu'
+import MobileMenu from './mobileMenu'
 export default {
   name: 'HEADNOPTION',
   components: {
-    Menu
+    Menu,
+    MobileMenu
   },
   data() {
     return {
@@ -53,7 +95,10 @@ export default {
       menuLsit: [],
       childImg: [],
       LazyImg: [],
-      menuIsShow: false
+      drawer: false,
+      searchControl: false,
+      menuIsShow: false,
+      email: []
     }
   },
   watch: {
@@ -81,13 +126,24 @@ export default {
     },
     handleChildMouseover ({child_img}) {
       this.childImg = child_img
+    },
+    handleChangeDrowse (val) {
+      this.drawer = val
+    },
+    handleSearchControl () {
+      this.searchControl = !this.searchControl
     }
   },
 }
 </script>
 
-<style socped lang="scss">
-.menu-bg{
+<style  lang="stylus" scoped >
+.mobile-centre /deep/ .v-text-field.v-text-field--solo .v-input__control
+  min-height 30px
+.mobile-centre  /deep/ .v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) > .v-input__control > .v-input__slot
+  box-shadow none
+  background #f1f1f1
+.menu-bg
   background: rgba(0,0,0,.5);
   width: 100%;
   height: calc(100vh - 150px);
@@ -95,26 +151,40 @@ export default {
   left: -1px;
   top: 150px;
   z-index: 9;
-}
-.nav-navigation {
+.nav-navigation 
   display: flex;
   justify-content: space-between;
   height: 90px;
   padding: 0 8vw;
   background: #ffffff;
-  div {
+  div 
     display: flex;
     align-items: center;
-  }
-  img {
+  img 
     height: 100%;
-  }
-  i {
+  
+  i 
     font-size: 30px;
     margin: 0 10px;
-  }
-}
-.kids-itme{
+
+.kids-itme
   margin-left: 20px;
-}
+  
+.mobile-navigation
+  height 55px
+  overflow hidden
+  padding 10px
+  position relative
+  display: flex;
+  align-items: center;
+  background #ffffff
+  .mobile-centre 
+    position absolute
+    left 50%
+    top 50%
+    transform translate(-50%,-50%)
+    height: 35px;
+    img
+      height: 100%;
+  
 </style>
