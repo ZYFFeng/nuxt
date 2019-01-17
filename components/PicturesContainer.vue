@@ -1,16 +1,30 @@
 <template>
-  <div 
-    :style="{width: picturesWidth}" 
-    class="pictures-of-palmetto-leaves">
+  <div class="pictures-of-palmetto-leaves">
     <div class="pictures-container">
       <a :href="link">
         <img 
-          src="https://shop.wangoon.com/img/2018122807628.jpg" 
+          :src="imageShack"
+          class="elevation-5" 
           alt="">
       </a>
-      <h3 class="pictures-title">NEW YEAR SALE</h3>
-      <el-button v-if="bntType === 'text'">button</el-button>
-      <el-button v-else>button</el-button>
+      <template v-if="onlyIcon">
+        <v-icon class="icon-link elevation-5"> fab fa-facebook-f</v-icon>
+      </template>
+      <template v-else>
+        <h3 
+          v-if="title" 
+          class="pictures-title">{{ title }}</h3>
+        <v-btn 
+          v-if="bntType !== 'text'"
+          flat
+          outline>
+          SHOP NOW
+        </v-btn>
+        <v-btn 
+          v-else 
+          class="bnt-border"
+          flat>SHOP NOW</v-btn>
+      </template>
     </div>
   </div>
 </template>
@@ -29,26 +43,57 @@ export default {
         return 'text'
       }
     },
-    picturesWidth: {
+    imageShack: {
       type: String,
-      default: () => '20%'
-    }
+        default() {
+          return ''
+        }
+    },
+    onlyIcon: {
+      type: Boolean,
+      default: () => false
+    },
+    title: {
+      type: String,
+      default: () => ''
+    },
   }
 }
 </script>
 
-<style lang="scss" scoped>
-.pictures-container{
+<style lang="stylus" scoped>
+.pictures-of-palmetto-leaves
+  width 100%
+.pictures-container
+  position relative
+  margin 5px
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content:center;
-  img {
+  font-width 100
+  .pictures-title
+    margin: 20px 0 0;
+  a
+    overflow hidden
+  img 
+    display flex
     width:100%;
     transition:all .5s ease;
-    &:hover{
+    &:hover
       transform:scale(1.16);
-    }
-  }
-}
+  >>> .bnt-border .v-btn__content
+    border-radius 0
+    border-bottom 1px solid 
+    font-weight 200
+    font-size 16px
+  >>> .icon-link
+    position absolute
+    bottom -20px
+    background #333
+    color #fff
+    width 40px
+    height 40px
+    border-radius 50%
+    font-size 18px
 </style>

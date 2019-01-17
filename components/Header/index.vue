@@ -5,8 +5,9 @@
         <div class="navigation-left">
           <v-text-field
             v-model="email"
-            label="E-mail"
+            label="SEARCH"
             required
+            append-icon="search"
           />
         </div>
         <div class="navigation-centre">
@@ -15,12 +16,28 @@
             alt="">
         </div>
         <div class="navigation-right">
-          <i class="el-icon-goods"/>
-          <i class="el-icon-sold-out"/>
-          <i class="el-icon-star-on"/>
+          <a 
+            href="https://www.facebook.com/DreamPairs" 
+            target="_blank" 
+            rel="noopener noreferrer">
+            <v-icon color="#000">fab fa-facebook-f</v-icon>
+          </a>
+          <a 
+            href="https://www.instagram.com/dreampairsshoes/" 
+            target="_blank" 
+            rel="noopener noreferrer">
+            <v-icon color="#000">fab fa-instagram</v-icon>
+          </a>
+          <a 
+            href="https://www.youtube.com/channel/UCjeu1MJuZnVB2sMjE2uX7wQ" 
+            target="_blank" 
+            rel="noopener noreferrer">
+            <v-icon color="#000">fab fa-youtube</v-icon>
+          </a>
+          
         </div>
       </div>
-      <div class="mobile-navigation">
+      <div class="mobile-navigation hidden-sm-and-up">
         <div>
           <v-toolbar-side-icon 
             style="margin:0"
@@ -34,7 +51,6 @@
           </v-btn>
         </div>
         <div class="mobile-centre">
-          
           <v-text-field
             v-if="searchControl"
             height="20px"
@@ -109,7 +125,7 @@ export default {
     }
   },
   async mounted() {
-    const { data } = await this.$axios.get('https://shop.wangoon.com/api/NetworkApi/menu_list_api')
+    const { data } = await this.$axios.get('/api/NetworkApi/menu_list_api')
     this.menuLsit = data.resData
   },
   methods: {

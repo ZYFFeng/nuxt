@@ -2,8 +2,8 @@
   <div class="browse">
     <v-navigation-drawer
       v-model="drawerChild"
-      absolute
       temporary
+      fixed
     >
       <div class="navigation-title">
         <h2 class="title">Browse</h2>

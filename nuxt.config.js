@@ -15,7 +15,8 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' }
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' },
+      { rel: 'stylesheet', href: 'https://use.fontawesome.com/releases/v5.6.3/css/all.css' }
     ]
   },
 
@@ -23,28 +24,33 @@ module.exports = {
   ** Customize the progress-bar color
   */
   loading: { color: '#b93daa' },
-
   /*
   ** Global CSS
   */
   css: [
     'element-ui/lib/theme-chalk/reset.css',
-    'element-ui/lib/theme-chalk/display.css',
     '@/assets/style/element-variables.scss',
-    '~/assets/style/app.styl'
+    '~/assets/style/app.styl',
+    { src: 'swiper/dist/css/swiper.css' }
   ],
 
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: ['@/plugins/element-ui','@/plugins/vuetify'],
+  plugins: [
+    '@/plugins/element-ui',
+    '@/plugins/vuetify',
+    { src: '~/plugins/vue-awesome-swiper.js', ssr: false }
+  ],
 
   /*
   ** Nuxt.js modules
   */
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
-    '@nuxtjs/axios'
+    ['@nuxtjs/axios', {
+      baseURL: 'https://shop.wangoon.com'
+    }]
   ],
   /*
   ** Axios module configuration
@@ -52,7 +58,6 @@ module.exports = {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
   },
-
   /*
   ** Build configuration
   */
