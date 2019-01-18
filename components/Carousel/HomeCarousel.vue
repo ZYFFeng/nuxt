@@ -17,19 +17,16 @@
         </div>
       </div>
       <div 
-        v-if="$store.state.windowSize.x <= 600"
         slot="pagination" 
-        class="swiper-pagination"/>
+        class="swiper-pagination  hidden-sm-and-up"/>
       <div 
-        v-if="$store.state.windowSize.x >= 600"
         slot="button-prev" 
-        class="carousel-button-prev elevation-10">
+        class="carousel-button-prev elevation-10 hidden-xs-only">
         <v-icon class="">fas fa-chevron-left</v-icon>
       </div>
       <div 
-        v-if="$store.state.windowSize.x >= 600"
         slot="button-next" 
-        class="carousel-button-next elevation-10">
+        class="carousel-button-next elevation-10 hidden-xs-only">
         <v-icon>fas fa-chevron-right</v-icon>
       </div>
     </div>

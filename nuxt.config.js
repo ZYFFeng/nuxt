@@ -1,4 +1,6 @@
 const pkg = require('./package')
+const path = require('path')
+const resolve = file => path.resolve(__dirname, file)
 
 module.exports = {
   mode: 'universal',
@@ -52,6 +54,15 @@ module.exports = {
       baseURL: 'https://shop.wangoon.com'
     }]
   ],
+  router: {
+    extendRoutes (routes, resolve) {
+      routes.push({
+        name: 'listChild',
+        path: '/list/:id',
+        component: resolve('pages/list.vue')
+      })
+    }
+  },
   /*
   ** Axios module configuration
   */
