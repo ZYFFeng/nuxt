@@ -106,6 +106,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+li {
+  list-style: none
+}
 .nav-menu > .menu-list {
   position: relative;
   padding: 0 15vw;

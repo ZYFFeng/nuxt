@@ -1,0 +1,58 @@
+<template>
+  <v-list 
+    class="elevation-8 list-menu">
+    <v-list-tile>SHOP BY STYLE</v-list-tile>
+    <v-divider/>
+    <div class="shop-content">
+      <div 
+        v-for="(item, key) in category[0]" 
+        :key="key" 
+        class="shop-content-item">
+        <v-list-tile>{{ key }}</v-list-tile>
+        <v-subheader 
+          v-for="(cildeItem, cildeKey) in item" 
+          :key="cildeKey" 
+          inset>
+          <a :href="cildeItem[Object.keys(cildeItem)[0]]">{{ Object.keys(cildeItem)[0] }}</a> 
+        </v-subheader>
+      </div>
+    </div>
+    <v-divider/>
+    <v-list-tile>FILTER BY</v-list-tile>
+    <v-divider/>
+    <v-list-tile>PRICE</v-list-tile>
+    <v-subheader 
+      v-for="item in price"
+      :key="item.show"
+      inset><a href="javascript:;">{{ item.show }}</a></v-subheader>
+  </v-list>
+</template>
+
+<script>
+export default {
+  name: 'ListMenu',
+  props: {
+    price: {
+      type: Array,
+      default: () => []
+    }, 
+    category: {
+      type: Array,
+      default: () => []
+    },
+    color: {
+      type: Array,
+      default: () => []
+    }
+  }
+}
+</script>
+
+<style lang="stylus" scoped>
+.list-menu 
+  >>> .v-list__tile
+    font-weight 500
+  .shop-content-item >>> .v-list__tile
+    font-weight 400
+    padding-left 40px
+</style>

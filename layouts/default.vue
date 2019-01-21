@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <HeadNoption/>
-    <el-main><nuxt/></el-main>
+    <div class="main"><nuxt/></div>
     <v-footer 
       dark 
       class="pa-3"
@@ -36,7 +36,7 @@ export default {
   font-family: MontserratRegular
 	src:url('../assets/font/Montserrat-Regular.ttf')
 
-body, html 
+body, html,html .main, .application
 	font-family:'MontserratRegular'
   font-size: 16px
   word-spacing: 1px
@@ -51,6 +51,8 @@ body, html
   box-sizing: border-box
   margin: 0
   padding: 0
-li 
-  list-style: none
+a
+  text-decoration none
+.main 
+  padding 0 10vw
 </style>

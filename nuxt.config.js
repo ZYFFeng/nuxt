@@ -30,8 +30,7 @@ module.exports = {
   ** Global CSS
   */
   css: [
-    'element-ui/lib/theme-chalk/reset.css',
-    '@/assets/style/element-variables.scss',
+    'normalize.css',
     '~/assets/style/app.styl',
     { src: 'swiper/dist/css/swiper.css' }
   ],

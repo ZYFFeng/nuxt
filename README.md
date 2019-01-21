@@ -3,7 +3,10 @@
 > My funkadelic Nuxt.js project
 
 ## Build Setup
-
+```js
+subheader
+divider
+```
 ``` bash
 # install dependencies
 $ yarn install

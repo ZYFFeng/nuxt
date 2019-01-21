@@ -11,17 +11,17 @@
           v-for="(banner, i) in banners" 
           :key="i" 
           class="swiper-slide">
-          <ul class="product">
-            <li class="product-img">
+          <div class="product">
+            <div class="product-img">
               <img 
                 :src="banner.s3LargeImage" 
                 alt 
                 @error="$event.target.src = banner.LargeImage">
-            </li>
-            <li class="product-title">{{ banner.brand }}</li>
-            <li class="product-name">{{ banner.product_name }}</li>
-            <li class="price-price">{{ banner.price }}</li>
-          </ul>
+            </div>
+            <div class="product-title">{{ banner.brand }}</div>
+            <div class="product-name">{{ banner.product_name }}</div>
+            <div class="price-price">{{ banner.price }}</div>
+          </div>
         </div>
       </div>
     </div>
