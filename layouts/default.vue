@@ -2,6 +2,7 @@
   <v-app>
     <HeadNoption/>
     <div class="main"><nuxt/></div>
+    <Footer/>
     <v-footer 
       dark 
       class="pa-3"
@@ -14,9 +15,11 @@
 </template>
 <script>
 import HeadNoption from '@/components/Header/index.vue'
+import Footer from '@/components/Footer/index.vue'
 export default {
   components: {
-    HeadNoption
+    HeadNoption,
+    Footer
   },
   mounted () {
     this.onResize()
