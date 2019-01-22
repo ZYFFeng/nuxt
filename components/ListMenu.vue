@@ -4,18 +4,28 @@
     <v-list-tile>SHOP BY STYLE</v-list-tile>
     <v-divider/>
     <div class="shop-content">
-      <div 
-        v-for="(item, key) in category[0]" 
-        :key="key" 
-        class="shop-content-item">
-        <v-list-tile>{{ key }}</v-list-tile>
+      <template v-if="category[0]">
+        <div 
+          v-for="(item, key) in category[0]" 
+          :key="key" 
+          class="shop-content-item">
+          <v-list-tile>{{ key }}</v-list-tile>
+          <v-subheader 
+            v-for="(cildeItem, cildeKey) in item" 
+            :key="cildeKey" 
+            inset>
+            <a :href="cildeItem[Object.keys(cildeItem)[0]]">{{ Object.keys(cildeItem)[0] }}</a> 
+          </v-subheader>
+        </div>
+      </template>
+      <template v-else>
         <v-subheader 
-          v-for="(cildeItem, cildeKey) in item" 
+          v-for="(cildeItem, cildeKey) in category" 
           :key="cildeKey" 
           inset>
-          <a :href="cildeItem[Object.keys(cildeItem)[0]]">{{ Object.keys(cildeItem)[0] }}</a> 
+          <a :href="cildeItem">{{ cildeKey }}</a> 
         </v-subheader>
-      </div>
+      </template>
     </div>
     <v-divider/>
     <v-list-tile>FILTER BY</v-list-tile>
@@ -37,7 +47,7 @@ export default {
       default: () => []
     }, 
     category: {
-      type: Array,
+      type: [Array, Object],
       default: () => []
     },
     color: {

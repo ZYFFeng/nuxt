@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <HeadNoption/>
-    <div class="main"><nuxt/></div>
+    <v-container><nuxt/></v-container>
     <Footer/>
     <v-footer 
       dark 
@@ -23,39 +23,64 @@ export default {
   },
   mounted () {
     this.onResize()
+    window.onresize = this.throttle( _ => {
+        this.onResize()
+      }
+    )
   },
   methods: {
-    onResize () {
+    onResize() {
       this.$store.commit('changeWindowSize', { 
         x: window.innerWidth, 
         y: window.innerHeight 
       })  
+    },
+    throttle(fn, interval = 300) {
+        let canRun = true
+        return function () {
+          if (!canRun) return
+          canRun = false
+          setTimeout(() => {
+              fn.apply(this, arguments)
+              canRun = true
+          }, interval)
+      };
     }
   }
 }
 </script>
-<style lang="stylus" socped>
-@font-face
-  font-family: MontserratRegular
-	src:url('../assets/font/Montserrat-Regular.ttf')
+<style >
+@font-face {
+  font-family: MontserratRegular;
+	src:url('../assets/font/Montserrat-Regular.ttf');
+}
+  
 
-body, html,html .main, .application
-	font-family:'MontserratRegular'
-  font-size: 16px
-  word-spacing: 1px
-  -ms-text-size-adjust: 100%
-  -webkit-text-size-adjust: 100%
-  -moz-osx-font-smoothing: grayscale
-  -webkit-font-smoothing: antialiased
-  box-sizing: border-box
+body, html,html .main, .application {
+  font-family:'MontserratRegular';
+  font-size: 16px;
+  word-spacing: 1px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+	
+.theme--light.application{
+  background: #ffffff;
+
+}
 *,
 *:before,
-*:after 
-  box-sizing: border-box
-  margin: 0
-  padding: 0
-a
-  text-decoration none
-.main 
-  padding 0 10vw
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+  
+a {
+  text-decoration: none;
+
+}
 </style>

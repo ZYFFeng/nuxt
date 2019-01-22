@@ -30,6 +30,7 @@ module.exports = {
   ** Global CSS
   */
   css: [
+    'element-ui/lib/theme-chalk/index.css',
     'normalize.css',
     '~/assets/style/app.styl',
     { src: 'swiper/dist/css/swiper.css' }
@@ -57,8 +58,18 @@ module.exports = {
     extendRoutes (routes, resolve) {
       routes.push({
         name: 'listChild',
-        path: '/list/:id',
-        component: resolve('pages/list.vue')
+        path: '/list/:menuName',
+        component: resolve('pages/list.vue'),
+        children:[{
+					path: '/list/:menuName/:childName',
+					component: resolve('pages/list.vue'),
+					children:[
+						{
+              path: '/list/:menuName/:childName/:className',
+							component: resolve('pages/list.vue')
+						}	
+					]
+			}]
       })
     }
   },

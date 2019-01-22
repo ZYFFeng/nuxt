@@ -1,76 +1,72 @@
 <template>
-  <v-layout>
-    <v-flex 
+  <v-hover >
+    <v-card
+      slot-scope="{ hover }"
     >
-      <v-container grid-list-lg>
-        <v-layout 
-          row 
-          wrap>
-          <v-flex
-            v-for="item in listData"
-            :key="item.LargeImage"
-            xs12
-            sm6
-            md4
+      <v-img
+        :src="LargeImage"
+        :alt="title"
+        aspect-ratio="1.2"
+        contain
+      >
+        <v-expand-transition>
+          <div
+            v-if="hover"
+            class="d-flex transition-fast-in-fast-out v-card--reveal display-3"
+            style="height: 100%;"
           >
-            <v-hover >
-              <v-card
-                slot-scope="{ hover }"
-              >
-                <v-img
-                  :src="item.LargeImage"
-                  :alt="item.title"
-                  aspect-ratio="1.2"
-                  contain
-                >
-                  <v-expand-transition>
-                    <div
-                      v-if="hover"
-                      class="d-flex transition-fast-in-fast-out v-card--reveal display-3"
-                      style="height: 100%;"
-                    >
-                      <v-btn
-                        dark
-                        class="quick-view"
-                      >
-                        QUICK VIEW
-                      </v-btn>
-                    </div>
-                  </v-expand-transition>
-                </v-img>
-                <v-card-title>
-                  <h6 class="subheading mb-0 text-xs-center card-brand">{{ item.brand }}</h6>
-                  <p class=" text-xs-center card-title">{{ item.title }}</p>
-                  <p>${{ item.update_sale_price }}</p>
-                </v-card-title>
-                <v-card-actions>
-                  <template v-for="(color, index) in item.color.slice(0, 4)" >
-                    <i 
-                      v-if="index < 4"
-                      :key="index" 
-                      :style="{background:color, border:color}"
-                      class="card-color  elevation-3"/>
-                  </template>
-                  <template v-if="item.color.length > 4" >
-                    <v-icon 
-                      class="card-color elevation-3">fas fa-plus-circle</v-icon>
-                  </template>
-                </v-card-actions>
-              </v-card>
-            </v-hover>
-          </v-flex>
-        </v-layout>
-      </v-container>
-      
-    </v-flex>
-  </v-layout>
+            <v-btn
+              dark
+              class="quick-view"
+            >
+              QUICK VIEW
+            </v-btn>
+          </div>
+        </v-expand-transition>
+      </v-img>
+      <v-card-title>
+        <h6 class="subheading mb-0 text-xs-center card-brand">{{ brand }}</h6>
+        <p class=" text-xs-center card-title">{{ title }}</p>
+        <p>${{ price }}</p>
+      </v-card-title>
+      <v-card-actions>
+        <template v-for="(color, index) in color.slice(0, 4)" >
+          <i 
+            v-if="index < 4"
+            :key="index" 
+            :style="{background:color, border:color}"
+            class="card-color  elevation-3"/>
+        </template>
+        <template v-if="color.length > 4" >
+          <v-icon 
+            class="card-color elevation-3">fas fa-plus-circle</v-icon>
+        </template>
+      </v-card-actions>
+    </v-card>
+  </v-hover>
 </template>
 
 <script>
 export default {
   name: 'ListCard',
   props: {
-    listData: {
+    LargeImage: {
+      type: String,
+      default:() => ''
+    },
+    brand: {
+      type: String,
+      default:() => ''
+    },
+    title: {
+      type: String,
+      default:() => ''
+    },
+    price: {
+      type: String,
+      default:() => ''
+    },
+    color: {
       type: Array,
       default:() => []
     }
@@ -102,6 +98,7 @@ export default {
   text-align center
 .card-title
   height 3em
+  overflow hidden
 .card-color
   margin 0 5px
   width 15px
