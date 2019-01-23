@@ -25,27 +25,11 @@
         ref="menu" 
         xs12
         class="hidden-sm-and-up">
-        <v-menu 
-          origin="center center"
-          transition="scale-transition">
-          <v-btn
-            slot="activator"
-          >
-            FILTER BY 
-          </v-btn>
-          <v-list class="mobile-menu">
-            <v-list-tile >PRICE</v-list-tile>
-            <v-subheader
-              v-for="(item, index) in ListMenu.price"
-              :key="index"
-              inset
-            >
-              {{ item.show }}
-            </v-subheader>
-          </v-list>
-        </v-menu>
+        <ListMenuMobile
+          :price-filter="ListMenu.price"
+          @handlePrice="handlePrice"
+        />
       </v-flex>
-      
       <!-- pcMenu ListCard chip pagination-->
       <v-layout 
         justify-space-around 
@@ -65,7 +49,7 @@
             :color="ListMenu.color"
             :category="ListMenu.category"
             :price="ListMenu.price"
-            :menu-name="department"
+            :menu-name="menuName"
             @handlePrice="handlePrice"
           />
         </v-flex>
@@ -79,20 +63,21 @@
           <v-layout 
             class="pagination-conten">
             <div 
-              v-show="priceShow !== '' " 
               class="refined">
-              <span >Refined by：</span>
-              <v-chip
-                v-model="chip"
-                close
-              >{{ $route.query.show }}
-              </v-chip>
+              <div v-show="chip">
+                <span class="hidden-xs-only" >Refined by：</span>
+                <v-chip
+                  v-model="chip"
+                  close
+                >{{ $route.query.show }}
+                </v-chip>
+              </div>
             </div>
             <el-pagination
               v-if="page !== 0"
-              :total="page"
+              :total="total"
               :page-size="pageSize"
-              :current-page.sync="curPage"
+              :current-page.sync="page"
               small
               layout="prev, pager, next"
               @size-change="handlePageChange"
@@ -145,9 +130,9 @@
         xs12
         class="pagination-rigth">
         <el-pagination
-          :total="pages" 
+          :total="total" 
           :page-size="pageSize" 
-          :current-page.sync="curPage" 
+          :current-page.sync="page" 
           small
           layout="prev, pager, next"
           @size-change="handlePageChange"
@@ -160,17 +145,27 @@
 <script>
 import ListCard from '@/components/ListCard'
 import ListMenu from '@/components/ListMenu'
+import ListMenuMobile from '@/components/ListMenuMobile'
 import { throttle, delUndefined } from '@/utils'
 export default {
   components: {
     ListCard,
-    ListMenu
+    ListMenu,
+    ListMenuMobile
+  },
+  validate({ params, query }){
+    if (params.menuName) {
+      return true
+    } else {
+      return false
+    }
   },
   data() {
     return {
       menuName: '',
       className: '',
-      chip: true,
+      priceShow: '',
+      chip: false,
       progressVisible: false,
       scrollTop: 0,
       isFixed: false,
@@ -186,6 +181,7 @@ export default {
       category: params.childName,
       class: params.className
     }
+
     const goodsListParams = {...Params, ...query}
     const { department } = goodsListParams
 
@@ -197,17 +193,24 @@ export default {
     const propertyResponse  = await $axios.$get(
       '/api/NetworkApi/property', 
       { params: { department } }
-      )
+    )
 
 
     return {
       listData: resData,
-      pages: page * goodsListParams.pageSize,
-      pageSize: +goodsListParams.pageSize,
-      curPage: +goodsListParams.page,
-      department,
-      priceShow: query.show || '',
       ListMenu: propertyResponse,
+      pageSize: +goodsListParams.pageSize,
+      page: +goodsListParams.page,
+      total: page * goodsListParams.pageSize,
+      menuName: department
+    }
+  },
+  watch: {
+    'chip'(val) {
+      if (!val) {
+        this.routerPush({})
+        this.goodsList()
+      }
     }
   },
   mounted() {
@@ -216,16 +219,17 @@ export default {
     window.addEventListener('scroll', throttle(() => {
       this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop 
       this.isFixed = this.scrollTop > 300
+      this.ListMenuWidth = this.$refs.ListMenu.offsetWidth -16
     }, true))
   },
   methods: {
     handlePrice(obj) {
+      this.chip = true
       const priceQuery = delUndefined(obj)
       this.routerPush(priceQuery)
       this.goodsList(priceQuery)
     },
     handlePageChange(val) {
-      this.progressVisible = true
       const query = this.getRouterQuery()
       query.page = val
       query.pageSize = query.pageSize ? query.pageSize : 21
@@ -258,7 +262,8 @@ export default {
       this.className = params.className
       return item
     },
-    async goodsList( query ) {
+    async goodsList( query = { page: 1, pageSize: 21} ) {
+      this.progressVisible = true
       const { params } = this.$route
       const goodsListParams = {
         department: params.menuName,
@@ -270,11 +275,10 @@ export default {
         '/api/NetworkApi/new_goods_list_by_property', 
         { params: parameter }
       ) 
-      console.log(query)
-      this.pages = query.page
-      this.pageSize = query.pageSize
+      this.page = +query.page
+      this.pageSize = +query.pageSize
+      this.total = page * query.pageSize
       this.listData = resData
-      this.pages = page * query.pageSize
       this.progressVisible = false
     },
     getRouterQuery () {
@@ -354,7 +358,7 @@ export default {
 
 .fixedEvent
   position fixed
-  height 92vh
+  max-height 92vh
   overflow-y scroll
   top 20px
   z-index 9

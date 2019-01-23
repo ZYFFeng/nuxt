@@ -69,7 +69,7 @@ module.exports = {
 							component: resolve('pages/list.vue')
 						}	
 					]
-			}]
+			  }]
       })
     }
   },

@@ -83,10 +83,10 @@ export default {
   methods: {
     handlePrice(item) {
       const priceObj = JSON.parse(JSON.stringify(item))
-      priceObj.price_gt = priceObj.gt
-      priceObj.price_lt = priceObj.lt
       priceObj.page = 1
       priceObj.pageSize = 21
+      priceObj.price_gt = priceObj.gt
+      priceObj.price_lt = priceObj.lt
       delete priceObj.gt
       delete priceObj.lt
       this.$emit('handlePrice', priceObj)
