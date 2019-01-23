@@ -19,6 +19,7 @@
         </div>
       </template>
       <template v-else>
+        <v-subheader>{{ menuName }}</v-subheader>
         <v-subheader 
           v-for="(cildeItem, cildeKey) in category" 
           :key="cildeKey" 
@@ -34,7 +35,14 @@
     <v-subheader 
       v-for="item in price"
       :key="item.show"
-      inset><a href="javascript:;">{{ item.show }}</a></v-subheader>
+      inset
+      @click="handlePrice(item)">
+      <a 
+        :class="{ selected : item.show === isSelected }" 
+        href="javascript:;">
+        {{ item.show }}
+      </a>
+    </v-subheader>
   </v-list>
 </template>
 
@@ -53,12 +61,43 @@ export default {
     color: {
       type: Array,
       default: () => []
+    },
+    menuName: {
+      type: String,
+      default: () => ''
     }
-  }
+  },
+  data() {
+    return {
+      isSelected: this.$route.query.show
+    }
+  },
+  watch: {
+    '$route' () {
+      this.isSelected = this.$route.query.show
+    }
+  },
+  mounted () {
+    console.log(this.isSelected)
+  },
+  methods: {
+    handlePrice(item) {
+      const priceObj = JSON.parse(JSON.stringify(item))
+      priceObj.price_gt = priceObj.gt
+      priceObj.price_lt = priceObj.lt
+      priceObj.page = 1
+      priceObj.pageSize = 21
+      delete priceObj.gt
+      delete priceObj.lt
+      this.$emit('handlePrice', priceObj)
+    }
+  },
 }
 </script>
 
 <style lang="stylus" scoped>
+.selected
+  color #fc8c1b
 .list-menu 
   >>> .v-list__tile
     font-weight 500
