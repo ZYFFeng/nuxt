@@ -2,10 +2,23 @@
   <div class="pictures-of-palmetto-leaves">
     <div class="pictures-container">
       <a :href="link">
-        <img 
+        <v-img 
           :src="imageShack"
-          class="elevation-5" 
+          class="image-shack"
+          contain
           alt="">
+          <v-layout
+            slot="placeholder"
+            fill-height
+            align-center
+            justify-center
+            ma-0
+          >
+            <v-progress-circular 
+              indeterminate 
+              color="grey darken-3"></v-progress-circular>
+          </v-layout>
+        </v-img>
       </a>
       <template v-if="onlyIcon">
         <v-icon class="icon-link elevation-5"> fab fa-facebook-f</v-icon>
@@ -69,14 +82,14 @@ export default {
   margin 5px
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content:center;
   font-width 100
   .pictures-title
     margin: 20px 0 0;
+    align-self center
   a
     overflow hidden
-  img 
+  .image-shack 
     display flex
     width:100%;
     transition:all .5s ease;
@@ -90,10 +103,14 @@ export default {
   >>> .icon-link
     position absolute
     bottom -20px
+    left 50%
+    transform translateX(-50%)
     background #333
     color #fff
     width 40px
     height 40px
     border-radius 50%
     font-size 18px
+.v-btn
+  align-self center
 </style>

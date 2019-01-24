@@ -100,7 +100,8 @@ export default {
       instagram: []
     }
   },
-  async asyncData({ $axios }) {
+  async asyncData({ $axios, error }) {
+    try {
       const params = { code: 'H_1' }
       const { list } = await $axios.$get('/mall/home/banner', { params })
       const { data }  = await $axios.$get('/mall/home/homeColumn')
@@ -110,6 +111,10 @@ export default {
         homeColumn: data,
         bestSellersList: bestSellersList.list
       }
+    } catch (error) {
+      error({ statusCode: 505, message: 'Post not found' })
+    } 
+      
   },
   async mounted() {
     const instagram = await this.$axios.$get('/api/InstagramApi/instagram')

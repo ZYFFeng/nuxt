@@ -9,6 +9,17 @@
         aspect-ratio="1.2"
         contain
       >
+        <v-layout
+          slot="placeholder"
+          fill-height
+          align-center
+          justify-center
+          ma-0
+        >
+          <v-progress-circular 
+            indeterminate 
+            color="grey darken-3"></v-progress-circular>
+        </v-layout>
         <v-expand-transition>
           <div
             v-if="hover"
@@ -26,7 +37,7 @@
       </v-img>
       <v-card-title>
         <h6 class="subheading mb-0 text-xs-center card-brand">{{ brand }}</h6>
-        <p class=" text-xs-center card-title">{{ title }}</p>
+        <p class="text-xs-center card-title">{{ title }}</p>
         <p>{{ price }}</p>
       </v-card-title>
       <v-card-actions>

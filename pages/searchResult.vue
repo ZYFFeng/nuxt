@@ -6,10 +6,14 @@
       divider="/"/>
     <v-layout
       row
-      wrap
-    >
+      wrap>
+      <!-- title -->
+      <v-flex xs12>
+        <div class="headr-url-title">
+          <h2>Search results for <em>{{ $route.query.keyWords }}</em> </h2>
+        </div>
+      </v-flex>
       <v-flex 
-        v-if="page !== 0" 
         xs12
         justify-end
         class="pagination-rigth">
@@ -83,27 +87,6 @@ export default {
   data() {
     return {
       progressVisible: false,
-    }
-  },
-  async asyncData({isDev,$axios, route, store, env, params, query, req, res, redirect, error}) {
-    const searchQuery = {
-      keyWords: query.keyWords,
-      page: query.page || 1,
-      pageSize: query.pageSize || 20
-    }
-    const { list, page_num } = await $axios.$get(
-      '/api/NetworkApi/new_search', 
-      { params: searchQuery }
-    )
-    return {
-      listData: list,
-      total: page_num * searchQuery.pageSize,
-      pageSize: +searchQuery.pageSize,
-      page: +searchQuery.page
-    }
-  },
-  data () {
-    return {
       items: [
         {
           text: 'HOME',
@@ -115,15 +98,38 @@ export default {
           disabled: true,
           href: '/searchResult'
         }
-      ]
+      ],
     }
+  },
+  async asyncData({isDev,$axios, route, store, env, params, query, req, res, redirect, error}) {
+    try {
+      const searchQuery = {
+        keyWords: query.keyWords,
+        page: query.page || 1,
+        pageSize: query.pageSize || 20
+      }
+      const { list, page_num, status } = await $axios.$get(
+        '/api/NetworkApi/new_search', 
+        { params: searchQuery }
+      )
+      return {
+        listData: list,
+        total: page_num * searchQuery.pageSize,
+        pageSize: +searchQuery.pageSize,
+        page: +searchQuery.page,
+        status: status
+      }
+    } catch (e) {
+      error({ statusCode: 500, message: 'Post not found' })
+    }
+    
   },
   methods: {
     handlePageChange(val) {
       const query = this.$route.query
       query.page = val
       query.pageSize = query.pageSize ? query.pageSize : 20
-      this.$router.push({ query })
+      this.routerPush(query)
       this.searchList(query)
     },
     async searchList(params) {
@@ -138,6 +144,10 @@ export default {
     },
     getRouterQuery () {
       return delUndefined(this.$route.query)
+    },
+    routerPush(query) {
+      console.log(query)
+      this.$router.push({ query })
     }
   }
 }
@@ -166,4 +176,25 @@ export default {
       top 200px
       left 50%
       transform translateX(-50%)
+
+.headr-url-title
+  border-bottom: 3px solid #e9e4de;
+  padding-bottom: 6px;
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 15px;
+  margin-bottom 20px
+  h2
+    margin-right: 30px;
+    font-size: 23px;
+    em
+      color: rgb(252, 140, 27);
+      font-weight 800
+
+@media only screen and (max-width: 768px)
+  .headr-url-title
+    justify-content center
+    border: none;
+    h2
+      font-size: 30px
 </style>

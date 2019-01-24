@@ -72,14 +72,7 @@
                 class>
                 <a :href="childItem.redirect_url">
                   <img 
-                    v-if="item.menu_name === 'BRANDS'" 
                     :src="childItem.img" >
-                  <v-img 
-                    v-else
-                    :src="childItem.img"
-                    contain
-                    aspect-ratio="1" 
-                    alt/>
                 </a>
               </div>
             </template>
@@ -118,7 +111,6 @@ export default {
       this.$emit('MouseOut')
     },
     handleChildMouseover (item) {
-      console.log(item)
       this.$emit('childMouseover', item)
     }
   }
