@@ -5,10 +5,7 @@
       wrap>
       <!-- breadcrumbs -->
       <v-flex xs12>
-        <v-breadcrumbs 
-          :items="items" 
-          dork 
-          divider="/"/>
+        <BreadcrumbsRoute/>
       </v-flex>
       <!-- title -->
       <v-flex xs12>
@@ -29,6 +26,11 @@
           :price-filter="ListMenu.price"
           @handlePrice="handlePrice"
         />
+        <v-chip
+          v-model="chip"
+          close
+        >{{ $route.query.show }}
+        </v-chip>
       </v-flex>
       <!-- pcMenu ListCard chip pagination-->
       <v-layout 
@@ -52,6 +54,7 @@
             :menu-name="menuName"
             @handlePrice="handlePrice"
           />
+          
         </v-flex>
         <v-flex
           xs12
@@ -64,8 +67,10 @@
             class="pagination-conten">
             <div 
               class="refined">
-              <div v-show="chip">
-                <span class="hidden-xs-only" >Refined by：</span>
+              <div 
+                v-show="chip" 
+                class="hidden-xs-only">
+                <span >Refined by：</span>
                 <v-chip
                   v-model="chip"
                   close
@@ -78,7 +83,7 @@
               :total="total"
               :page-size="pageSize"
               :current-page.sync="page"
-              small
+              :small="$store.state.windowSize.x < 900"
               layout="prev, pager, next"
               @size-change="handlePageChange"
               @current-change="handlePageChange"/>
@@ -116,7 +121,7 @@
                 :large-image="item.LargeImage"
                 :brand="item.brand"
                 :title="item.title"
-                :price="item.update_sale_price"
+                :price="item.price"
                 :color="item.color"
               />
             </v-flex>
@@ -133,7 +138,7 @@
           :total="total" 
           :page-size="pageSize" 
           :current-page.sync="page" 
-          small
+          :small="$store.state.windowSize.x < 900"
           layout="prev, pager, next"
           @size-change="handlePageChange"
           @current-change="handlePageChange"/>
@@ -146,31 +151,14 @@
 import ListCard from '@/components/ListCard'
 import ListMenu from '@/components/ListMenu'
 import ListMenuMobile from '@/components/ListMenuMobile'
+import BreadcrumbsRoute from '@/components/BreadcrumbsRoute'
 import { throttle, delUndefined } from '@/utils'
 export default {
-  components: {
-    ListCard,
-    ListMenu,
-    ListMenuMobile
-  },
   validate({ params, query }){
     if (params.menuName) {
       return true
     } else {
       return false
-    }
-  },
-  data() {
-    return {
-      menuName: '',
-      className: '',
-      priceShow: '',
-      chip: false,
-      progressVisible: false,
-      scrollTop: 0,
-      isFixed: false,
-      ListMenuWidth: 0,
-      items: []
     }
   },
   async asyncData({  params, query, error, $axios }) {
@@ -205,6 +193,25 @@ export default {
       menuName: department
     }
   },
+   components: {
+    ListCard,
+    ListMenu,
+    ListMenuMobile,
+    BreadcrumbsRoute
+  },
+  data() {
+    return {
+      menuName: '',
+      className: '',
+      priceShow: '',
+      chip: false,
+      progressVisible: false,
+      scrollTop: 0,
+      isFixed: false,
+      ListMenuWidth: 0,
+      items: []
+    }
+  },
   watch: {
     'chip'(val) {
       if (!val) {
@@ -214,8 +221,8 @@ export default {
     }
   },
   mounted() {
-    this.items = this.itemCreate(this.$route)
     this.ListMenuWidth = this.$refs.ListMenu.offsetWidth -16
+    this.chip = !!this.$route.query.show
     window.addEventListener('scroll', throttle(() => {
       this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop 
       this.isFixed = this.scrollTop > 300
@@ -235,32 +242,6 @@ export default {
       query.pageSize = query.pageSize ? query.pageSize : 21
       this.routerPush(query)
       this.goodsList(query)
-    },
-    itemCreate ( {params, path} ) {
-      const item = [{
-        text: 'HOME',
-        disabled: false,
-        href: '/'
-      }]
-      const keys = Object.keys(params)
-      keys.forEach((e, i) => {
-        if ( i === (keys.length - 1)) {
-          item.push({
-            text: params[e],
-            disabled: true,
-            href: path
-          })
-        } else {
-          item.push({
-            text: params[e],
-            disabled: false,
-            href: !i ?`/list/${params[e]}`:`/list/${params[keys[i - 1]]}/${params[e]}`
-          })
-        }
-      })
-      this.menuName = params.menuName
-      this.className = params.className
-      return item
     },
     async goodsList( query = { page: 1, pageSize: 21} ) {
       this.progressVisible = true
@@ -293,13 +274,6 @@ export default {
 
 <style lang="stylus" scoped>
   
-.v-breadcrumbs
-  padding: 10px;
-  background: #f5f5f5;
-  margin-bottom: 10px;
-  min-height 2.1em
-
-
 .headr-url-title
   border-bottom: 3px solid #e9e4de;
   padding-bottom: 6px;

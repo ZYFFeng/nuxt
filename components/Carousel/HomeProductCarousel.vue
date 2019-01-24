@@ -7,21 +7,27 @@
       ref="swiperBox" 
       class="swiper">
       <div class="swiper-wrapper">
+       
         <div 
           v-for="(banner, i) in banners" 
           :key="i" 
           class="swiper-slide">
-          <div class="product">
-            <div class="product-img">
-              <img 
-                :src="banner.s3LargeImage" 
-                alt 
-                @error="$event.target.src = banner.LargeImage">
+          <nuxt-link :to="{ path:'/Details',query:{ style: banner.style } }">
+            <div class="product">
+              <div class="product-img">
+                <v-img 
+                  :src="banner.LargeImage"
+                  :lazy-src="`https://picsum.photos/10/6?image=1`"
+                  alt 
+                  aspect-ratio="1.2"
+                  contain
+                  @error="$event.target.src = banner.LargeImage"/>
+              </div>
+              <div class="product-title text-xs-center">{{ banner.brand }}</div>
+              <div class="product-name text-xs-center">{{ banner.product_name }}</div>
+              <div class="price-price text-xs-center">{{ banner.price }}</div>
             </div>
-            <div class="product-title">{{ banner.brand }}</div>
-            <div class="product-name">{{ banner.product_name }}</div>
-            <div class="price-price">{{ banner.price }}</div>
-          </div>
+          </nuxt-link>
         </div>
       </div>
     </div>
@@ -95,18 +101,17 @@ export default {
 .swiper-main-body
   position relative
   padding 0 66px
-  .product li
-    text-align center
-  .product-img
-    display flex
-    align-items center
-    justify-content center
-    height 200px
-  .product-img img 
-    max-height 200px
-    max-width 100%
-  .swiper-button-prev, .swiper-button-next
-    filter grayscale(100%)
+.product
+  display flex
+  flex-direction column
+.product li
+  text-align center
+.product-img
+  display flex
+  align-items center
+  justify-content center
+.swiper-button-prev, .swiper-button-next
+  filter grayscale(100%)
 .price-price
   margin 10px
 </style>

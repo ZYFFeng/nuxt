@@ -77,9 +77,6 @@ export default {
       this.isSelected = this.$route.query.show
     }
   },
-  mounted () {
-    console.log(this.isSelected)
-  },
   methods: {
     handlePrice(item) {
       const priceObj = JSON.parse(JSON.stringify(item))

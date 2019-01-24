@@ -18,12 +18,12 @@
           v-if="bntType !== 'text'"
           flat
           outline>
-          SHOP NOW
+          <a :href="link">SHOP NOW</a>
         </v-btn>
         <v-btn 
           v-else 
           class="bnt-border"
-          flat>SHOP NOW</v-btn>
+          flat><a :href="link">SHOP NOW</a> </v-btn>
       </template>
     </div>
   </div>

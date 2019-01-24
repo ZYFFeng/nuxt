@@ -2,7 +2,9 @@
   <div class="nav-menu">
     <ul class="menu-list">
       <li class="menu-item">
-        <nuxt-link to="/">HOME</nuxt-link>
+        <nuxt-link 
+          class="menu-item-title" 
+          to="/">HOME</nuxt-link>
       </li>
       <li
         v-for="item in menuLsit"
@@ -11,11 +13,13 @@
         @mouseenter="handleMenuList(item)"
         @mouseleave="handleMouseOut"
       >
-        <nuxt-link to="/list">{{ item.menu_name }}</nuxt-link>
+        <a 
+          :href="item.redirect_url" 
+          class="menu-item-title">{{ item.menu_name }}</a>
         <div
           v-if="item.child_menu.length !== 0"
           v-show="item.menu_name === menuName"
-          class="child-item"
+          class="child-item" 
         >
           <div class="menu-chid-item">
             <ul v-if="item.menu_name !== 'BRANDS' && item.menu_name !== 'DEALS'">
@@ -25,7 +29,7 @@
                   v-for="childItem in item.child_menu"
                   :key="childItem.child_name"
                   @mouseover="handleChildMouseover(childItem)"
-                >{{ childItem.child_name }}</li>
+                ><a :href="childItem.redirect">{{ childItem.child_name }}</a></li>
               </template>
               <template v-else>
                 <li 
@@ -38,7 +42,7 @@
                       v-for="titleItem in item.child_menu[0][key]"
                       :key="titleItem.child_name"
                       @mouseover="handleChildMouseover(titleItem)"
-                    >{{ titleItem.child_name }}</li>
+                    ><a :href="titleItem.redirect">{{ titleItem.child_name }}</a></li>
                   </ul>
                 </li>
               </template>
@@ -52,9 +56,13 @@
                 v-for="childItem in childImg" 
                 :key="childItem" 
                 class>
-                <img 
-                  :src="childItem" 
-                  alt>
+                <a :href="redirect">
+                  <v-img 
+                    :src="childItem"
+                    contain
+                    aspect-ratio="1" 
+                    alt/>
+                </a>
               </div>
             </template>
             <template v-else>
@@ -62,9 +70,17 @@
                 v-for="childItem in item.child_img" 
                 :key="childItem.img" 
                 class>
-                <img 
-                  :src="childItem.img" 
-                  alt>
+                <a :href="childItem.redirect_url">
+                  <img 
+                    v-if="item.menu_name === 'BRANDS'" 
+                    :src="childItem.img" >
+                  <v-img 
+                    v-else
+                    :src="childItem.img"
+                    contain
+                    aspect-ratio="1" 
+                    alt/>
+                </a>
               </div>
             </template>
           </div>
@@ -86,6 +102,10 @@ export default {
       default: () => []
     },
     menuName: {
+      type: String,
+      default: () => ''
+    },
+    redirect: {
       type: String,
       default: () => ''
     }
@@ -117,7 +137,7 @@ li {
   background: #150d0f;
   .menu-item {
     flex: 1;
-    a {
+    .menu-item-title {
       width: 100%;
       list-style: none;
       line-height: 60px;
@@ -155,6 +175,7 @@ li {
       display: flex;
       justify-content: space-around;
       align-items: center;
+      flex: 1;
       div {
         flex: 1;
         padding: 10px;

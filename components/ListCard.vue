@@ -27,7 +27,7 @@
       <v-card-title>
         <h6 class="subheading mb-0 text-xs-center card-brand">{{ brand }}</h6>
         <p class=" text-xs-center card-title">{{ title }}</p>
-        <p>${{ price }}</p>
+        <p>{{ price }}</p>
       </v-card-title>
       <v-card-actions>
         <template v-for="(color, index) in color.slice(0, 4)" >

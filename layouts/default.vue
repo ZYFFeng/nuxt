@@ -54,7 +54,13 @@ body, html,html .main, .application {
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
 }
-	
+@media only screen and (min-width: 1904px) {
+  .container {
+    max-width: 1570px !important;
+  }
+}
+
+
 .theme--light.application{
   background: #ffffff;
 }

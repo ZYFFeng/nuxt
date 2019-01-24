@@ -24,7 +24,7 @@
           <v-list-tile 
             v-if="item.menu_name === 'DEALS'" 
             :key="item.menu_name">
-            <v-list-tile-title>{{ item.menu_name }}</v-list-tile-title>
+            <v-list-tile-title><a :href="item.redirect_url">{{ item.menu_name }}</a></v-list-tile-title>
           </v-list-tile>
           <v-list-group
             v-else
@@ -33,18 +33,20 @@
           >
             <v-list-tile slot="activator">
               <v-list-tile-content>
-                <v-list-tile-title>{{ item.menu_name }}</v-list-tile-title>
+                <v-list-tile-title><a :href="item.redirect_url">{{ item.menu_name }}</a></v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
             <template v-if="item.menu_name !== 'KIDS'">
-              <v-list-tile
-                v-for="subItem in item.child_menu"
-                :key="subItem.child_name"
-              >
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ subItem.child_name }}</v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
+              <a 
+                v-for="subItem in item.child_menu" 
+                :href="subItem.redirect"
+                :key="subItem.child_name">
+                <v-list-tile>
+                  <v-list-tile-content>
+                    <v-list-tile-title>{{ subItem.child_name }}</v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+              </a>
             </template>
             <template v-else>
               <v-list-group
@@ -58,14 +60,16 @@
                     <v-list-tile-title>{{ key }}</v-list-tile-title>
                   </v-list-tile-content>
                 </v-list-tile>
-                <v-list-tile
-                  v-for="kudsItem in subItem"
-                  :key="kudsItem.child_name"
-                >
-                  <v-list-tile-content>
-                    <v-list-tile-title>{{ kudsItem.child_name }}</v-list-tile-title>
-                  </v-list-tile-content>
-                </v-list-tile>
+                <a 
+                  v-for="kidsItem in subItem"
+                  :key="kidsItem.child_name" 
+                  :href="kidsItem.redirect">
+                  <v-list-tile>
+                    <v-list-tile-content>
+                      <v-list-tile-title>{{ kidsItem.child_name }}</v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                </a>
               </v-list-group>
             </template>
           </v-list-group>
@@ -93,10 +97,10 @@
     },
     watch: {
       drawer (value) {
-          this.drawerChild = value;
+        this.drawerChild = value;
       },
       drawerChild (value) {
-          this.$emit('drawerStatus', value)
+        this.$emit('drawerStatus', value)
       }
     },
     methods: {
