@@ -4,10 +4,12 @@
       <div class="nav-navigation hidden-xs-only" >
         <div class="navigation-left">
           <v-text-field
-            v-model="email"
+            v-model="keyWords"
             label="SEARCH"
             required
             append-icon="search"
+            @click:append="handleSearch"
+            @keyup.enter="handleSearch"
           />
         </div>
         <div class="navigation-centre">
@@ -121,7 +123,7 @@ export default {
       drawer: false,
       searchControl: false,
       menuIsShow: false,
-      email: [],
+      keyWords: '',
       redirect: ''
     }
   },
@@ -157,6 +159,9 @@ export default {
     },
     handleSearchControl () {
       this.searchControl = !this.searchControl
+    },
+    handleSearch() {
+      this.$router.push({ path: '/searchResult', query: { keyWords: this.keyWords }})
     }
   },
 }

@@ -4,6 +4,7 @@
       <a :href="link">
         <v-img 
           :src="imageShack"
+          :aspect-ratio="ratio"
           class="image-shack"
           contain
           alt="">
@@ -24,9 +25,12 @@
         <v-icon class="icon-link elevation-5"> fab fa-facebook-f</v-icon>
       </template>
       <template v-else>
-        <h3 
+        <h2 
           v-if="title" 
-          class="pictures-title">{{ title }}</h3>
+          class="pictures-title">{{ title }}</h2>
+        <p 
+          v-if="discount" 
+          class="text-xs-center">{{ discount }}</p>
         <v-btn 
           v-if="bntType !== 'text'"
           flat
@@ -70,6 +74,14 @@ export default {
       type: String,
       default: () => ''
     },
+    discount: {
+      type: String,
+      default: () => ''
+    },
+    ratio: {
+      type: [String, Number],
+      default: () => undefined
+    }
   }
 }
 </script>

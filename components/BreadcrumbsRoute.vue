@@ -45,9 +45,4 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.v-breadcrumbs
-  padding: 10px;
-  background: #f5f5f5;
-  margin-bottom: 10px;
-  min-height 2.1em
 </style>

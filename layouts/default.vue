@@ -75,4 +75,11 @@ body, html,html .main, .application {
 a {
   text-decoration: none;
 }
+.v-breadcrumbs {
+  padding: 8px 15px;
+  margin-bottom: 20px;
+  list-style: none;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
 </style>

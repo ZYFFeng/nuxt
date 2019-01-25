@@ -123,6 +123,7 @@
                 :title="item.title"
                 :price="item.price"
                 :color="item.color"
+                :navigation="`/Details/?style=${item.style}&parent=${menuName}`"
               />
             </v-flex>
           </v-layout>

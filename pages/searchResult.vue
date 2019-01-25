@@ -124,13 +124,18 @@ export default {
     }
     
   },
+  watch: {
+    '$route'() {
+      this.handlePageChange()
+    }
+  },
   methods: {
-    handlePageChange(val) {
+    handlePageChange(val = 1) {
       const query = this.$route.query
       query.page = val
       query.pageSize = query.pageSize ? query.pageSize : 20
-      this.routerPush(query)
       this.searchList(query)
+      this.routerPush(query)
     },
     async searchList(params) {
       this.progressVisible = true
@@ -143,22 +148,17 @@ export default {
 
     },
     getRouterQuery () {
-      return delUndefined(this.$route.query)
+      return this.$route.query
     },
     routerPush(query) {
       console.log(query)
-      this.$router.push({ query })
+      this.$router.push({ path: 'searchResult', query })
     }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-.v-breadcrumbs
-  padding: 10px;
-  background: #f5f5f5;
-  margin-bottom: 10px;
-  min-height 2.1em
 .pagination-rigth
   display flex
 
