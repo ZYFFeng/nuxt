@@ -2,9 +2,10 @@
   <v-layout
     :column="$store.state.windowSize.x < 750"
     wrap
+    class="details-carousel"
   >
     <v-flex
-      md1
+      md2
       sm2
       xs12
       order-xs1
@@ -17,7 +18,7 @@
     <v-flex
       order-xs0
       order-sm1
-      md11
+      md10
       sm10
       xs12>
       <div
@@ -88,6 +89,8 @@
 </script>
 
 <style lang="stylus" scoped>
+.details-carousel
+  overflow hidden
 .swiper-container
     display flex
   .swiper-slide
@@ -102,10 +105,15 @@
         min-width 60px
         min-height 60px
         border-radius initial
+        display flex
+        align-items center
+        justify-content center
+        padding 2px
         &:focus
           outline none
         img 
-          width 100%
+          max-width 100%
+          max-height 100%
   >>> .swiper-pagination-bullet-active
         border 2px solid #ffc979
         border-radius initial

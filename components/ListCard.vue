@@ -130,6 +130,10 @@ export default {
     navigation: {
       type: String,
       default:() => ''
+    },
+    listStyle: {
+      type: String,
+      default:() => ''
     }
   },
   methods: {
@@ -147,7 +151,8 @@ export default {
       }
     },
     handleQuickView(event) {
-      // event.preventDefault()
+      console.log(123)
+      this.$emit('handleQuickView', this.listStyle)
     }
   }
 }

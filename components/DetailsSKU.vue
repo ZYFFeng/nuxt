@@ -1,6 +1,6 @@
 <template>
   <v-layout 
-    column
+    wrap
     class="defailt-specifications">
     <h2>{{ title }}</h2>
     <v-flex class="defailt-rating">
@@ -15,32 +15,49 @@
       ></v-rating>
       <span class="font-weight-bold ml-1">{{ count }}</span>
     </v-flex>
-    <p class="price font-weight-bold">{{ detailsList[selectIndex].price }}</p>
-    <div class="font-weight-bold">
-      <span>COLOR</span>
-      <i>{{ detailsList[selectIndex].color }}</i>
-    </div>
+    <v-flex 
+      v-if="price" 
+      xs12>
+      <p class="price font-weight-bold">{{ detailsList[selectIndex].price }}</p>
+    </v-flex>
+    <v-flex xs12>
+      <div class="font-weight-bold">
+        <span>COLOR</span>
+        <i >{{ detailsList[selectIndex].color }}</i>
+      </div>
+    </v-flex>
+    
 
     <v-flex
       class="select-image my-2"
       xs12>
-      <v-img 
+      <div 
         v-for="(item, i) in detailsList"
         :class="{'select-active': selectIndex === i}"
         :key="item.sku"
-        :src="item.MediumImage[0].amazon"
-        contain
-        class="ma-1"
-        aspect-ratio="1"
-        width="50px" 
-        height="50px"
-        alt=""
-        @click="handleColorSelect(i)"/>
+        class="ma-1 pa-1">
+        <v-img 
+          :src="item.MediumImage[0].amazon"
+          contain
+          aspect-ratio="1"
+          width="40px" 
+          height="40px"
+          alt=""
+          @click="handleColorSelect(i)"/>
+      </div>
+     
     </v-flex>
-    <p class="font-weight-bold">
-      <span class="mr-1">SIZE </span>
-      <i>{{ detailsList[selectIndex].size[sizeSelected].size }} B(M)US</i>
-    </p>
+
+    <v-flex
+      xs12
+    >
+      <p class="font-weight-bold">
+        <span class="mr-1">SIZE </span>
+        <i>{{ sizeSelected === null ? '' : detailsList[selectIndex].size[sizeSelected].size }} B(M)US</i>
+      </p>
+      
+    </v-flex>
+    
 
     <v-flex 
       class="my-1"
@@ -64,10 +81,11 @@
     </v-flex>
 
     <v-flex
-      class=""
+      sm8
+      xs12
     >
       <v-btn
-        color="grey darken-4 my-5 "
+        color="grey darken-4 my-5 mx-0"
       >
         BUY AT AMAZON
       </v-btn>
@@ -113,7 +131,7 @@ export default {
   },
   data () {
     return {
-      sizeSelected: 0
+      sizeSelected: null
     }
   },
   mounted() {
@@ -121,6 +139,7 @@ export default {
   },
   methods: {
     handleColorSelect(i) {
+      this.sizeSelected = null
       this.$emit('handleColorSelect', i)
     },
     handleSizeSelect(i, inventory) {
@@ -157,32 +176,24 @@ export default {
   >>> .v-btn__content 
         color #fff  
         padding 0 20px
-
+  >>> .v-btn
+        width 100%
 .description
   li
     line-height 23px
 
 .select-image
   display flex
+  flex-wrap wrap
   .v-responsive
     flex initial
-
-.select-active
-  position relative
-  &:after
-    content ''
-    position absolute
-    display inline-block
-    width 100%
-    height 100%
-    border 1px solid
     border-radius 100%
-
-
-
+    overflow hidden
+.select-active
+  border-radius 100%
+  box-shadow: 0 0 3px 1px #0000007a
 .inventory-not
   opacity .5
-
 .inventory 
   background #2d2d2d
   color #ffffff

@@ -39,7 +39,7 @@
         wrap>
         <v-flex 
           ref="ListMenu"
-          class=" pr-3 hidden-xs-only"
+          class="  hidden-xs-only"
           xl2
           lg3
           md4
@@ -119,16 +119,18 @@
             >
               <ListCard
                 :large-image="item.LargeImage"
+                :list-style="item.style"
                 :brand="item.brand"
                 :title="item.title"
                 :price="item.price"
                 :color="item.color"
                 :navigation="`/Details/?style=${item.style}&parent=${menuName}`"
+                @handleQuickView="handleQuickView"
               />
             </v-flex>
           </v-layout>
         </v-flex>
-        
+       
       </v-layout>
       <!-- pagination -->
       <v-flex 
@@ -145,6 +147,33 @@
           @current-change="handlePageChange"/>
       </v-flex>
     </v-layout>
+    <v-dialog
+      v-model="dialog"
+      light
+    > 
+      <v-layout
+        wrap
+        row
+      >
+        <v-flex xs4> 
+          <DetailsChoose
+            v-if="list && list.length !== 0"
+            :banner="list[selectIndex].HiResImage"
+          />
+        </v-flex>
+        <v-flex xs6>
+          <DetailsSKU
+            v-if="detailsData.name"
+            :title="detailsData.name"
+            :details-list="detailsData.list"
+            :select-index="selectIndex"
+            @handleColorSelect="handleColorSelect"
+          />
+        </v-flex>
+      </v-layout>
+     
+      
+    </v-dialog>
   </div>
 </template>
 
@@ -154,6 +183,8 @@ import ListMenu from '@/components/ListMenu'
 import ListMenuMobile from '@/components/ListMenuMobile'
 import BreadcrumbsRoute from '@/components/BreadcrumbsRoute'
 import { throttle, delUndefined } from '@/utils'
+import DetailsChoose from '@/components/Carousel/Details'
+import DetailsSKU from '@/components/DetailsSKU'
 export default {
   validate({ params, query }){
     if (params.menuName) {
@@ -196,6 +227,8 @@ export default {
   },
    components: {
     ListCard,
+    DetailsChoose,
+    DetailsSKU,
     ListMenu,
     ListMenuMobile,
     BreadcrumbsRoute
@@ -210,7 +243,11 @@ export default {
       scrollTop: 0,
       isFixed: false,
       ListMenuWidth: 0,
-      items: []
+      items: [],
+      detailsData: {},
+      list: [],
+      dialog: false,
+      selectIndex: 0
     }
   },
   watch: {
@@ -231,6 +268,9 @@ export default {
     }, true))
   },
   methods: {
+    handleColorSelect(i) {
+      this.selectIndex = i
+    },
     handlePrice(obj) {
       this.chip = true
       const priceQuery = delUndefined(obj)
@@ -243,6 +283,18 @@ export default {
       query.pageSize = query.pageSize ? query.pageSize : 21
       this.routerPush(query)
       this.goodsList(query)
+    },
+    handleQuickView(val) {
+      this.dialog = true
+      this.detailsView(val)
+    },
+    async detailsView(style) {
+      const { data } = await this.$axios.get(
+        '/api/NetworkApi/quickView', 
+        { params: { style } }
+      )
+      this.detailsData = data
+      this.list = data.list
     },
     async goodsList( query = { page: 1, pageSize: 21} ) {
       this.progressVisible = true
@@ -351,6 +403,6 @@ export default {
   border-radius:10px;
   background:rgba(0,0,0,0.1);
   -webkit-box-shadow: inset006pxrgba(0,0,0,0.5);
-
-  
+.list /deep/ .theme--light.v-sheet
+  background #fff
 </style>

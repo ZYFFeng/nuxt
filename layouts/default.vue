@@ -60,7 +60,6 @@ body, html,html .main, .application {
   }
 }
 
-
 .theme--light.application{
   background: #ffffff;
 }

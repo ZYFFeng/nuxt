@@ -144,7 +144,7 @@ li {
       position: absolute;
       background: #ffffff;
       width: 70vw;
-      z-index: 10;
+      z-index: 20;
       left: 50%;
       padding: 20px;
       transform: translateX(-50%);
