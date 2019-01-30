@@ -81,6 +81,9 @@ body, html,html .main, .application {
   
 a {
   text-decoration: none;
-
 }
+._form-branding {
+  display: none !important;
+}
+
 </style>

@@ -132,6 +132,8 @@ export default {
 }
 </script>
 <style lang="stylus" socped>
+li
+	list-style none
 .main-footer{
 	margin-top:80px
 	padding:60px 0

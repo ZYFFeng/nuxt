@@ -1,6 +1,5 @@
 <template>
   <div class="list">
-    {{ params }} {{ query }}  
     <v-layout 
       row 
       wrap>
@@ -99,6 +98,7 @@
                 :title="item.title"
                 :price="item.update_sale_price"
                 :color="item.color"
+                @showDialog="showDialog(true,item.style)"
               />
             </v-flex>
           </v-layout>
@@ -122,23 +122,37 @@
           @next-click="handlePageChange"/>
       </v-flex>
     </v-layout>
+    <!-- Dialogs component -->
+    <Dialogs 
+      :dialog-status="dialogStatus" 
+      :qv-data-staus="QvDataStaus"
+      :goods-info-data="goodsInfoData"
+      :first-data="firstData"
+      @modifyStatus="modifyStatus"></Dialogs>
+      <!-- Dialogs component -->
   </div>
 </template>
 
 <script>
 import ListCard from '@/components/ListCard'
 import ListMenu from '@/components/ListMenu'
+import Dialogs from '@/components/Dialogs'
 export default {
   components: {
     ListCard,
-    ListMenu
+    ListMenu,
+    Dialogs
   },
   data() {
     return {
       menuName: '',
       className: '',
       chip1: true,
-      items: []
+      items: [],
+      dialogStatus: false,
+      QvDataStaus: true,  //quick view data whether Loading completed
+      goodsInfoData:{},
+      firstData:{} 
     }
   },
   async asyncData({ isDev, route, store, env, params, query, req, res, redirect, error, $axios }) {
@@ -219,6 +233,20 @@ export default {
         { params: goodsListParams }
       )
       this.listData = resData
+    },
+    async showDialog (value,style) {
+      this.QvDataStaus = true;
+      this.dialogStatus = value;
+      const { data }= await this.$axios.get(
+        '/api/NetworkApi/quickView', 
+        { params: { style } }
+      )
+      this.goodsInfoData = data;
+      this.firstData = data.list[0];
+      this.QvDataStaus = false;    
+    },
+    modifyStatus (value){
+      this.dialogStatus = value;
     }
   },
 }

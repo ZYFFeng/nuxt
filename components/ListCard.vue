@@ -18,6 +18,7 @@
             <v-btn
               dark
               class="quick-view"
+              @click="$emit('showDialog')"
             >
               QUICK VIEW
             </v-btn>
@@ -70,6 +71,8 @@ export default {
       type: Array,
       default:() => []
     }
+  },
+  methods:{ 
   }
 }
 </script>
