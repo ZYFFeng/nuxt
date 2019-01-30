@@ -11,6 +11,7 @@
         <div class="about-Img">
           <img 
             src="../assets/img/about-img.png" 
+            style="width:100%" 
             class="img-responsive" />
         </div>
         <div class="about-Img-description">
@@ -57,21 +58,16 @@ export default{
 	src:url('../assets/font/Montserrat-Bold.ttf');
 }
 .about-contaier{
-	margin:0.42rem 0;
 }
 .about-title{
-	font-size:0.18rem;
 	color:#000;
 	font-family:"MontserratBold";
 }
 .about-Text-content{
 	margin:0.42rem 0;
-	font-size:0.125rem;
 	font-family:"MontserratLight";
 }
 .about-contaier .about-Img-description{
-	margin-top:0.2rem;
-	font-size:0.208rem;
 	color:#5e5d5d;
 	font-family:"LSANSI";
 	text-align:center;
@@ -79,11 +75,9 @@ export default{
 .about-Img-description .Img-text-content{
 	display:inline-block;
 	position:relative;
-	padding:0.26rem 0 0.26rem 0.42rem;
 }
 .about-contaier .about-Img-description .quotation-marks{
 	color:#aeaeae;
-	font-size:0.42rem;
 	position:absolute;
 }
 .about-contaier .about-Img-description .marks-top{
@@ -91,7 +85,6 @@ export default{
 	top:0;
 }
 .about-contaier .about-Img-description .marks-bottom{
-	bottom:-0.5rem;
 	right:0;
 }
 @media only screen and (min-width: 1600px){

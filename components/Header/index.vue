@@ -58,12 +58,15 @@
         <div class="mobile-centre">
           <v-text-field
             v-if="searchControl"
+            v-model="keyWords"
             height="20px"
             label="SEARCH"
             style="box-shadow: none;"
             clearable
             solo
             append-icon="search"
+            @click:append="handleSearch"
+            @keyup.enter="handleSearch"
           /> 
           <nuxt-link 
             v-else 

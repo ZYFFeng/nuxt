@@ -2,10 +2,12 @@
   <v-layout 
     wrap
     class="defailt-specifications">
-    <h2>{{ title }}</h2>
-    <v-flex class="defailt-rating">
+    <h2 class="mb-4">{{ title }}</h2>
+    <v-flex 
+      v-if="!isDialog" 
+      class="defailt-rating">
       <v-rating
-        v-model="start"
+        :value="start"
         class="pa-0 font-weight-bold"
         background-color="yellow darken-2 "
         color="yellow darken-2"
@@ -16,14 +18,14 @@
       <span class="font-weight-bold ml-1">{{ count }}</span>
     </v-flex>
     <v-flex 
-      v-if="price" 
+      v-if="detailsList[selectIndex].price" 
       xs12>
       <p class="price font-weight-bold">{{ detailsList[selectIndex].price }}</p>
     </v-flex>
     <v-flex xs12>
-      <div class="font-weight-bold">
+      <div class="font-weight-regular body-1">
         <span>COLOR</span>
-        <i >{{ detailsList[selectIndex].color }}</i>
+        <span class="text-gray" >{{ detailsList[selectIndex].color }}</span>
       </div>
     </v-flex>
     
@@ -40,8 +42,8 @@
           :src="item.MediumImage[0].amazon"
           contain
           aspect-ratio="1"
-          width="40px" 
-          height="40px"
+          width="34px" 
+          height="34px"
           alt=""
           @click="handleColorSelect(i)"/>
       </div>
@@ -51,9 +53,9 @@
     <v-flex
       xs12
     >
-      <p class="font-weight-bold">
+      <p class="font-weight-regular body-1">
         <span class="mr-1">SIZE </span>
-        <i>{{ sizeSelected === null ? '' : detailsList[selectIndex].size[sizeSelected].size }} B(M)US</i>
+        <span class="text-gray">{{ sizeSelected === null ? '' : detailsList[selectIndex].size[sizeSelected].size }} B(M)US</span>
       </p>
       
     </v-flex>
@@ -80,15 +82,50 @@
       </v-layout>
     </v-flex>
 
+
+    <v-flex 
+      v-if="isDialog" 
+      xs12
+      class="mt-5">
+      <v-layout 
+        row 
+        justify-space-around
+        wrap>
+        <v-flex xs5>
+          <v-btn
+            :to="{ path: '/details', query: { style: productStyle, parent: menuName } }"
+            nuxt
+            color="grey darken-4"
+          >
+            VIEW DETAILS
+          </v-btn>
+        </v-flex>
+        <v-flex xs5>
+          <v-btn 
+            flat
+            outline>
+            <a 
+              :href="selectIndex ? detailsList[selectIndex].buy_url : buyUrl" 
+              target="_blank">BUY AT AMAZON</a>
+          </v-btn>
+        </v-flex>
+      </v-layout>
+    </v-flex>
+
     <v-flex
+      v-else
       sm8
       xs12
     >
-      <v-btn
-        color="grey darken-4 my-5 mx-0"
-      >
-        BUY AT AMAZON
-      </v-btn>
+      <a 
+        :href="selectIndex ? detailsList[selectIndex].buy_url : buyUrl" 
+        target="_blank">
+        <v-btn
+          color="grey darken-4 my-5 mx-0"
+        >
+          BUY AT AMAZON
+        </v-btn>
+      </a>
     </v-flex>
     <v-flex class="description">
       <ul>
@@ -110,7 +147,7 @@ export default {
     },
     start: {
       type:  Number,
-      default:() => ''
+      default:() => 5
     },
     detailsList: {
       type: Array,
@@ -127,6 +164,22 @@ export default {
     selectIndex: {
       type: Number,
       default: () => 0
+    },
+    isDialog: {
+      type: Boolean,
+      default:() => false
+    },
+    buyUrl: {
+      type: String,
+      default: () => ''
+    },
+    productStyle: {
+      type: String,
+      default: () => ''
+    },
+    menuName: {
+      type: String,
+      default: () => ''
     }
   },
   data () {
@@ -135,7 +188,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.start)
   },
   methods: {
     handleColorSelect(i) {
@@ -197,4 +249,12 @@ export default {
 .inventory 
   background #2d2d2d
   color #ffffff
+
+.v-btn.v-btn--outline
+  border-radius 0
+  border 0
+  a
+    border-bottom 1px solid 
+    font-weight 200
+    font-size 16px
 </style>

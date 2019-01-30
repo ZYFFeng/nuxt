@@ -4,6 +4,12 @@
       justify-center
       row
       wrap>
+      <v-flex xs12>
+        <v-breadcrumbs 
+          :items="items" 
+          dork 
+          divider="/"/>
+      </v-flex>
       <v-flex
         xs12
         sm7>
@@ -50,13 +56,16 @@
         id="Description" 
         :class="{'pt-5': isFixed}"
         xs12>
-        <v-img 
-          :src="detailsData.a_add" 
+        <img 
+          :src="detailsData.a_add"
+          style="width:100%" 
           @error="$event.target.src = detailsData.no_a_add"/>
       </v-flex>
       <v-flex 
         id="Related" 
-        class="pa-5 mt-4">
+        :class="{'pa-5': $store.state.windowSize.x > 750 }"
+        class="mt-4"
+      >
         <h1 class="text-xs-center" >Related</h1>
         <HomeProductCarousel
           :banners="recommendList"
@@ -90,10 +99,8 @@
           />
         </template>
       </v-flex>
-      
-      
       <el-pagination
-        v-if="page !== 0"
+        v-if="detailsData.total"
         :total="detailsData.count"
         :page-size="pageSize"
         :current-page.sync="page"
@@ -101,7 +108,6 @@
         layout="prev, pager, next"
         @size-change="handlePageChange"
         @current-change="handlePageChange"/>
-
       <v-flex xs12>
         <h2 
           id="Q&A" 
@@ -134,12 +140,28 @@ export default {
       elOffsetTop: 0,
       page: 1,
       pageSize: 5,
-      commentList: []
+      commentList: [],
+       items: [
+        {
+          text: 'HOME',
+          disabled: false,
+          href: '/'
+        },
+        {
+          text: this.$route.query.parent,
+          disabled: false,
+          href: `/lits/${ this.$route.query.parent}`
+        },
+         {
+          text: this.$route.query.style,
+          disabled: true,
+          href: '/'
+        },
+      ]
     }
   },
   async asyncData({ $axios, query }) {
     const { style } = query
-
     try {
       const data = await $axios.$get('/api/NetworkApi/goods_detail',
         { params: { style } }
@@ -152,12 +174,10 @@ export default {
         list: data.list,
         recommendList: list
       }
-    } catch (error) {
-      return {
-        error
-      }
-    }
-    
+    } catch (e) {
+      error({ statusCode: 500, message: e.message })
+    } 
+      
   },
   mounted() {
     window.onscroll = throttle( e => {
@@ -165,16 +185,20 @@ export default {
       }
     )
     this.getCommentList()
+
+    if (!this.$route.query.parent) {
+      this.items.splice(1,1)
+    }
   },
   methods: {
     handleColorSelect(i) {
       this.selectIndex = i
     },
     onScroll (e) {
-      this.offsetTop = window.pageYOffset  //用于FF
+      this.$nextTick(_ => {
+        this.offsetTop = window.pageYOffset  //用于FF
               || document.documentElement.scrollTop  
               || document.body.scrollTop
-      this.$nextTick(_ => {
         this.elOffsetTop = this.elOffsetTop === 0 ? this.$refs.navigation.offsetTop : this.elOffsetTop
         this.isFixed = this.offsetTop > this.elOffsetTop
       })
@@ -186,11 +210,10 @@ export default {
         style: this.$route.query.style
       }
       const { data:{ data }} = await this.$axios.get(
-        '/api/NetworkApi/commentList?style=SHOO&page=1&pageSize=5', {
+        '/api/NetworkApi/commentList', {
           params
         })
       this.commentList = data
-      console.log(this.commentList)
     },
     handlePageChange(val) {
       this.page = val

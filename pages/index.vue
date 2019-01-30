@@ -53,6 +53,7 @@
           <v-flex 
             v-for="(item, key) in homeColumn.socialColumn.list" 
             :key="key" 
+            class="mb-4"
             md3
             xs6>
             <PicturesContainer
@@ -112,7 +113,7 @@ export default {
         bestSellersList: bestSellersList.list
       }
     } catch (error) {
-      error({ statusCode: 505, message: 'Post not found' })
+      error({ statusCode: 505, message: e.message })
     } 
       
   },

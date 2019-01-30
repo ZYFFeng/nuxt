@@ -105,7 +105,6 @@
     },
     methods: {
       handerSearch() {
-        console.log(1)
       }
     },
   }

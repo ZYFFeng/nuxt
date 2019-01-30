@@ -149,30 +149,44 @@
     </v-layout>
     <v-dialog
       v-model="dialog"
-      light
-    > 
+      max-width="900px"> 
       <v-layout
         wrap
         row
+        class="white pa-4 listData-content"
+        style="min-height:600px"
       >
-        <v-flex xs4> 
+        <v-flex xs7> 
           <DetailsChoose
             v-if="list && list.length !== 0"
             :banner="list[selectIndex].HiResImage"
+            is-dialog
           />
         </v-flex>
-        <v-flex xs6>
+        <v-flex xs5>
           <DetailsSKU
             v-if="detailsData.name"
+            :product-style="productStyle"
             :title="detailsData.name"
             :details-list="detailsData.list"
             :select-index="selectIndex"
+            :buy-url="detailsData.buy_url"
+            :menu-name="menuName"
+            is-dialog
             @handleColorSelect="handleColorSelect"
           />
+          <div 
+            v-show="dialogProgress" 
+            class="progress">
+            <v-progress-circular
+              :size="70"
+              :width="7"
+              color="#333"
+              indeterminate
+            />
+          </div>
         </v-flex>
       </v-layout>
-     
-      
     </v-dialog>
   </div>
 </template>
@@ -205,24 +219,25 @@ export default {
     const goodsListParams = {...Params, ...query}
     const { department } = goodsListParams
 
-
-    const { resData, page } = await $axios.$get(
+    try {
+      const { resData, page } = await $axios.$get(
       '/api/NetworkApi/new_goods_list_by_property', 
-      { params: goodsListParams }
-    )
-    const propertyResponse  = await $axios.$get(
-      '/api/NetworkApi/property', 
-      { params: { department } }
-    )
-
-
-    return {
-      listData: resData,
-      ListMenu: propertyResponse,
-      pageSize: +goodsListParams.pageSize,
-      page: +goodsListParams.page,
-      total: page * goodsListParams.pageSize,
-      menuName: department
+        { params: goodsListParams }
+      )
+      const propertyResponse  = await $axios.$get(
+        '/api/NetworkApi/property', 
+        { params: { department } }
+      )
+      return {
+        listData: resData,
+        ListMenu: propertyResponse,
+        pageSize: +goodsListParams.pageSize,
+        page: +goodsListParams.page,
+        total: page * goodsListParams.pageSize,
+        menuName: department
+      }
+    } catch (e) {
+      error({ statusCode: 500, message: e.message })
     }
   },
    components: {
@@ -240,6 +255,7 @@ export default {
       priceShow: '',
       chip: false,
       progressVisible: false,
+      dialogProgress: false,
       scrollTop: 0,
       isFixed: false,
       ListMenuWidth: 0,
@@ -247,7 +263,8 @@ export default {
       detailsData: {},
       list: [],
       dialog: false,
-      selectIndex: 0
+      selectIndex: 0,
+      productStyle: ''
     }
   },
   watch: {
@@ -256,16 +273,22 @@ export default {
         this.routerPush({})
         this.goodsList()
       }
+    },
+    '$route'(val){
+      // console.log(this.getRouterQuery())
+      // this.goodsList()
     }
   },
   mounted() {
-    this.ListMenuWidth = this.$refs.ListMenu.offsetWidth -16
-    this.chip = !!this.$route.query.show
-    window.addEventListener('scroll', throttle(() => {
-      this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop 
-      this.isFixed = this.scrollTop > 300
+    this.$nextTick(_ => {
       this.ListMenuWidth = this.$refs.ListMenu.offsetWidth -16
-    }, true))
+      this.chip = !!this.$route.query.show
+      window.onscroll = throttle(() => {
+        this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop 
+        this.isFixed = this.scrollTop > 300
+        this.ListMenuWidth = this.$refs.ListMenu.offsetWidth -16
+      })
+    })
   },
   methods: {
     handleColorSelect(i) {
@@ -286,6 +309,11 @@ export default {
     },
     handleQuickView(val) {
       this.dialog = true
+      this.dialogProgress = true
+      this.detailsData = {}
+      this.list = []
+      this.productStyle = val
+      this.selectIndex = 0
       this.detailsView(val)
     },
     async detailsView(style) {
@@ -295,8 +323,9 @@ export default {
       )
       this.detailsData = data
       this.list = data.list
+      this.dialogProgress = false
     },
-    async goodsList( query = { page: 1, pageSize: 21} ) {
+    async goodsList( query = { page: 1, pageSize: 21}, isRoute) {
       this.progressVisible = true
       const { params } = this.$route
       const goodsListParams = {
@@ -326,7 +355,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  
 .headr-url-title
   border-bottom: 3px solid #e9e4de;
   padding-bottom: 6px;
@@ -405,4 +433,6 @@ export default {
   -webkit-box-shadow: inset006pxrgba(0,0,0,0.5);
 .list /deep/ .theme--light.v-sheet
   background #fff
+
+
 </style>

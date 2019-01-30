@@ -22,10 +22,11 @@
               indeterminate 
               color="grey darken-3"></v-progress-circular>
           </v-layout>
-          <v-expand-transition v-if="!isDeals">
+          <v-expand-transition 
+            v-if="!isDeals" >
             <div
               v-if="hover"
-              class="d-flex transition-fast-in-fast-out v-card--reveal display-3"
+              class="d-flex transition-fast-in-fast-out v-card--reveal display-3 hidden-xs-only"
               style="height: 100%;"
             >
               <v-btn
@@ -144,14 +145,12 @@ export default {
       event.preventDefault()
       if (event.clipboardData) {
         event.clipboardData.setData('text/plain', this.dealCode)
-        console.log(event.clipboardData.getData('text'))
         this.$message({
           text: 'Copy the success!'
         })
       }
     },
     handleQuickView(event) {
-      console.log(123)
       this.$emit('handleQuickView', this.listStyle)
     }
   }

@@ -40,6 +40,9 @@ export default {
 }
 </script>
 <style >
+.text-gray{
+  color: #b9b9b9;
+}
 @font-face {
   font-family: MontserratRegular;
 	src:url('../assets/font/Montserrat-Regular.ttf');
