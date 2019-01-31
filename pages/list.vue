@@ -207,6 +207,15 @@ export default {
       return false
     }
   },
+  head () {
+    return {
+      title: this.seo.title,
+      meta: [
+        { hid: 'description', name: 'description',  content: this.seo.description },
+        { hid: 'keywords', name: 'keywords',  content: this.seo.keywords }
+      ]
+    }
+  },
   async asyncData({  params, query, error, $axios }) {
     const Params = {
       page: query.page || 1,
@@ -220,7 +229,7 @@ export default {
     const { department } = goodsListParams
 
     try {
-      const { resData, page } = await $axios.$get(
+      const { resData, page, seo } = await $axios.$get(
       '/api/NetworkApi/new_goods_list_by_property', 
         { params: goodsListParams }
       )
@@ -229,12 +238,13 @@ export default {
         { params: { department } }
       )
       return {
-        listData: resData,
-        ListMenu: propertyResponse,
+        listData: resData || [],
+        ListMenu: propertyResponse || {},
         pageSize: +goodsListParams.pageSize,
         page: +goodsListParams.page,
         total: page * goodsListParams.pageSize,
-        menuName: department
+        menuName: department,
+        seo: seo || {}
       }
     } catch (e) {
       error({ statusCode: 500, message: e.message })
@@ -280,15 +290,14 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(_ => {
-      this.ListMenuWidth = this.$refs.ListMenu.offsetWidth -16
-      this.chip = !!this.$route.query.show
-      window.onscroll = throttle(() => {
+    this.$nextTick(async _ => {
+      this.ListMenuWidth = await this.$refs.ListMenu.offsetWidth -16
+    })
+    this.chip = !!this.$route.query.show
+    window.onscroll = throttle(() => {
         this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop 
         this.isFixed = this.scrollTop > 300
-        this.ListMenuWidth = this.$refs.ListMenu.offsetWidth -16
       })
-    })
   },
   methods: {
     handleColorSelect(i) {

@@ -132,6 +132,36 @@ export default {
     HomeProductCarousel,
     CommentList,
   },
+
+  head () {
+    return {
+      title: this.seo.title,
+      meta: [
+        { hid: 'description', name: 'description',  content: this.seo.description },
+        { hid: 'keywords', name: 'keywords',  content: this.seo.keywords }
+      ]
+    }
+  },
+  async asyncData({ $axios, query, error }) {
+    const { style } = query
+    try {
+      const data = await $axios.$get('/api/NetworkApi/goods_detail',
+        { params: { style } }
+      )
+      const { list } = await $axios.$get('/api/NetworkApi/recommend',
+        { params: { style } }
+      )
+      return {
+        detailsData: data,
+        list: data.list,
+        recommendList: list,
+        seo: data.seo || {}
+      }
+    } catch (e) {
+      error({ statusCode: 500, message: e.message })
+    } 
+      
+  },
   data() {
     return {
       selectIndex: 0,
@@ -159,25 +189,6 @@ export default {
         },
       ]
     }
-  },
-  async asyncData({ $axios, query }) {
-    const { style } = query
-    try {
-      const data = await $axios.$get('/api/NetworkApi/goods_detail',
-        { params: { style } }
-      )
-      const { list } = await $axios.$get('/api/NetworkApi/recommend',
-        { params: { style } }
-      )
-      return {
-        detailsData: data,
-        list: data.list,
-        recommendList: list
-      }
-    } catch (e) {
-      error({ statusCode: 500, message: e.message })
-    } 
-      
   },
   mounted() {
     window.onscroll = throttle( e => {
