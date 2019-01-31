@@ -9,7 +9,7 @@
       style="font-size:14px"
     >
       <v-spacer/>
-      <div>&copy;{{ $store.state.windowSize }}2014 - 2019 Dream Pair Shoes. All Rights Reserved.</div>
+      <div>&copy;2014 - 2019 Dream Pair Shoes. All Rights Reserved.</div>
     </v-footer>
   </v-app>
 </template>

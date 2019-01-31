@@ -124,7 +124,7 @@
                 :title="item.title"
                 :price="item.price"
                 :color="item.color"
-                :navigation="`/Details/?style=${item.style}&parent=${menuName}`"
+                :navigation="`/Details?style=${item.style}&parent=${menuName}`"
                 @handleQuickView="handleQuickView"
               />
             </v-flex>

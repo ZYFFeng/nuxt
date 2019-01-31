@@ -100,7 +100,7 @@
         </template>
       </v-flex>
       <el-pagination
-        v-if="detailsData.total"
+        v-if="detailsData.count"
         :total="detailsData.count"
         :page-size="pageSize"
         :current-page.sync="page"

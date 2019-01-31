@@ -57,7 +57,7 @@
                 :key="childItem" 
                 class>
                 <a :href="redirect">
-                  <v-img 
+                  <img
                     :src="childItem"
                     contain
                     aspect-ratio="1" 

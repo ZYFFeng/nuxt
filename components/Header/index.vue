@@ -164,7 +164,9 @@ export default {
       this.searchControl = !this.searchControl
     },
     handleSearch() {
-      this.$router.push({ path: '/searchResult', query: { keyWords: this.keyWords }})
+      if (this.keyWords !== '') {
+        this.$router.push({ path: '/searchResult', query: { keyWords: this.keyWords.trim() }})
+      }
     }
   },
 }
@@ -179,7 +181,7 @@ export default {
 .menu-bg
   background: rgba(0,0,0,.5);
   width: 100%;
-  height: calc(100vh - 150px);
+  height: calc(100vh + 550px);
   position: absolute;
   left: -1px;
   top: 150px;

@@ -45,7 +45,9 @@
           :href="navigation" 
           :target="isDeals ? '_blank' : ''" >
           <h6 class="title mb-2 text-xs-center card-brand">{{ brand }}</h6>
-          <p class="text-xs-center card-title">{{ title }}</p>
+          <p 
+            class="text-xs-center card-title" 
+            style="-webkit-box-orient:vertical">{{ title }}</p>
           <p 
             v-if="!isDeals" 
             class="text-xs-center">{{ price }}</p>
@@ -180,8 +182,10 @@ export default {
   width 100%;
   text-align center
 .card-title
-  height 3em
-  overflow hidden
+  overflow  hidden
+  text-overflow ellipsis
+  display -webkit-box
+  -webkit-line-clamp 3
 .card-color
   margin 0 5px
   width 15px

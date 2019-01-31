@@ -55,6 +55,7 @@
             :title="item.product_name"
             :price="item.price"
             :color="item.color"
+            :navigation="`/Details?style=${item.style}`"
             @handleQuickView="handleQuickView"/>
         </v-flex>
       </v-layout>
