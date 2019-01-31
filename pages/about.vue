@@ -57,8 +57,7 @@ export default{
 	font-family:MontserratBold;
 	src:url('../assets/font/Montserrat-Bold.ttf');
 }
-.about-contaier{
-}
+
 .about-title{
 	color:#000;
 	font-family:"MontserratBold";

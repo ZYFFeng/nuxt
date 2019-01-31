@@ -26,6 +26,7 @@
           :title="detailsData.name"
           :start="+detailsData.avg_start"
           :count="detailsData.count + ' Reviews'"
+          :buy-url="detailsData.buy_url"
           :description="detailsData.description"
           :details-list="detailsData.list"
           :select-index="selectIndex"

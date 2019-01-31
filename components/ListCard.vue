@@ -43,11 +43,16 @@
       <v-card-title>
         <a 
           :href="navigation" 
+          :title="title" 
           :target="isDeals ? '_blank' : ''" >
-          <h6 class="title mb-2 text-xs-center card-brand">{{ brand }}</h6>
-          <p 
-            class="text-xs-center card-title" 
-            style="-webkit-box-orient:vertical">{{ title }}</p>
+          <h4 class="mb-2 text-xs-center card-brand">{{ brand }}</h4>
+          <div class="card-title-content">
+            <p 
+              class="text-xs-center card-title" 
+              style="-webkit-box-orient:vertical">
+              {{ title }}
+            </p>
+          </div>
           <p 
             v-if="!isDeals" 
             class="text-xs-center">{{ price }}</p>
@@ -177,7 +182,8 @@ export default {
     margin 20%
     border-radius 0
 
-
+.card-title-content
+  height 5em
 .card-brand
   width 100%;
   text-align center
@@ -186,6 +192,8 @@ export default {
   text-overflow ellipsis
   display -webkit-box
   -webkit-line-clamp 3
+  max-height 5em
+  font-size 14px
 .card-color
   margin 0 5px
   width 15px
