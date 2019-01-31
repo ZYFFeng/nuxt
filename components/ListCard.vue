@@ -3,46 +3,94 @@
     <v-card
       slot-scope="{ hover }"
     >
-      <v-img
-        :src="LargeImage"
-        :alt="title"
-        aspect-ratio="1.2"
-        contain
-      >
-        <v-expand-transition>
-          <div
-            v-if="hover"
-            class="d-flex transition-fast-in-fast-out v-card--reveal display-3"
-            style="height: 100%;"
+      <a 
+        :href="navigation" 
+        :target="isDeals ? '_blank' : ''" >
+        <v-img
+          :src="LargeImage"
+          :alt="title"
+          aspect-ratio="1.2"
+          contain >
+          <v-layout
+            slot="placeholder"
+            fill-height
+            align-center
+            justify-center
+            ma-0
           >
-            <v-btn
-              dark
-              class="quick-view"
-              @click="$emit('showDialog')"
+            <v-progress-circular 
+              indeterminate 
+              color="grey darken-3"></v-progress-circular>
+          </v-layout>
+          <v-expand-transition v-if="!isDeals">
+            <div
+              v-if="hover"
+              class="d-flex transition-fast-in-fast-out v-card--reveal display-3"
+              style="height: 100%;"
             >
-              QUICK VIEW
-            </v-btn>
-          </div>
-        </v-expand-transition>
-      </v-img>
+              <v-btn
+                dark
+                class="quick-view"
+                @click.prevent="handleQuickView"
+              >
+                QUICK VIEW
+              </v-btn>
+            </div>
+          </v-expand-transition>
+        </v-img>
+      </a>
       <v-card-title>
-        <h6 class="subheading mb-0 text-xs-center card-brand">{{ brand }}</h6>
-        <p class=" text-xs-center card-title">{{ title }}</p>
-        <p>${{ price }}</p>
-      </v-card-title>
-      <v-card-actions>
-        <template v-for="(color, index) in color.slice(0, 4)" >
-          <i 
-            v-if="index < 4"
-            :key="index" 
-            :style="{background:color, border:color}"
-            class="card-color  elevation-3"/>
-        </template>
-        <template v-if="color.length > 4" >
+        <a 
+          :href="navigation" 
+          :target="isDeals ? '_blank' : ''" >
+          <h6 class="title mb-2 text-xs-center card-brand">{{ brand }}</h6>
+          <p class="text-xs-center card-title">{{ title }}</p>
+          <p 
+            v-if="!isDeals" 
+            class="text-xs-center">{{ price }}</p>
+        </a>
+        <p 
+          v-if="isDeals && dealCode"
+          class="deals-code">
+          Code: {{ dealCode }}
           <v-icon 
-            class="card-color elevation-3">fas fa-plus-circle</v-icon>
-        </template>
-      </v-card-actions>
+            @copy="handleCopyCode" 
+            @click="handleExecCommandCopy">far fa-copy</v-icon>
+        </p>
+      </v-card-title>
+      <a 
+        v-if="!isDeals" 
+        :href="navigation" 
+        :target="isDeals ? '_blank' : ''"
+      >
+        <v-card-actions >
+          <template v-for="(color, index) in color.slice(0, 4)" >
+            <i 
+              v-if="index < 4"
+              :key="index" 
+              :style="{background:color, border:color}"
+              class="card-color  elevation-3"/>
+          </template>
+          <template v-if="color.length > 4" >
+          
+            <v-icon 
+              class="card-color elevation-3">fas fa-plus-circle</v-icon>
+          </template>
+        </v-card-actions>
+      </a>
+      <a 
+        v-else 
+        :href="navigation" 
+        :target="isDeals ? '_blank' : ''"
+        class="buy-amazon">
+        <v-card-actions>
+          <v-btn
+            color="grey darken-4 "
+          >
+            BUY AT AMAZON
+          </v-btn>
+        </v-card-actions>
+      </a> 
     </v-card>
   </v-hover>
 </template>
@@ -70,6 +118,41 @@ export default {
     color: {
       type: Array,
       default:() => []
+    },
+    dealCode: {
+      type: String,
+      default:() => ''
+    },
+    isDeals: {
+      type: Boolean,
+      default:() => false
+    },
+    navigation: {
+      type: String,
+      default:() => ''
+    },
+    listStyle: {
+      type: String,
+      default:() => ''
+    }
+  },
+  methods: {
+    handleExecCommandCopy() {
+      document.execCommand('copy')
+    },
+    handleCopyCode(event) {
+      event.preventDefault()
+      if (event.clipboardData) {
+        event.clipboardData.setData('text/plain', this.dealCode)
+        console.log(event.clipboardData.getData('text'))
+        this.$message({
+          text: 'Copy the success!'
+        })
+      }
+    },
+    handleQuickView(event) {
+      console.log(123)
+      this.$emit('handleQuickView', this.listStyle)
     }
   },
   methods:{ 
@@ -111,4 +194,20 @@ export default {
   text-align center
   color #000
 
+.buy-amazon
+  display inline-block
+  width 100%
+  >>> .v-btn
+         width 80%
+  >>> .v-btn__content 
+        color #fff
+
+.deals-code
+  display flex
+  input 
+    display inline-block
+  >>> .fa-copy
+        font-size 16px
+        margin-left: 5px;
+        cursor: pointer;
 </style>

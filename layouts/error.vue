@@ -10,11 +10,15 @@
 
 <script>
 export default {
+  scrollToTop: true,
    props: {
     error: {
       type: Object,
       default: null
     }
+  },
+  mounted() {
+    window.scrollTo(0,0)
   }
 }
 </script>

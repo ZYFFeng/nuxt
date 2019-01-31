@@ -4,16 +4,21 @@
       <div class="nav-navigation hidden-xs-only" >
         <div class="navigation-left">
           <v-text-field
-            v-model="email"
+            v-model="keyWords"
             label="SEARCH"
             required
             append-icon="search"
+            @click:append="handleSearch"
+            @keyup.enter="handleSearch"
           />
         </div>
         <div class="navigation-centre">
-          <img 
-            src="../../assets/img/logo.png"
-            alt="">
+          <nuxt-link 
+            to="/">
+            <img 
+              src="../../assets/img/logo.png"
+              alt="">
+          </nuxt-link>
         </div>
         <div class="navigation-right">
           <a 
@@ -59,17 +64,21 @@
             clearable
             solo
             append-icon="search"
-          />  
-          <img 
+          /> 
+          <nuxt-link 
             v-else 
-            src="../../assets/img/logo.png" 
-            alt="">
+            to="/">
+            <img 
+              src="../../assets/img/logo.png" 
+              alt="">
+          </nuxt-link>
         </div>
       </div>
       <Menu
         :menuLsit="menuLsit"
         :childImg="childImg"
         :menuName="menuName"
+        :redirect="redirect"
         class=" hidden-xs-only"
         @MenuList="handleMenuList" 
         @MouseOut="handleMouseOut"
@@ -114,7 +123,8 @@ export default {
       drawer: false,
       searchControl: false,
       menuIsShow: false,
-      email: []
+      keyWords: '',
+      redirect: ''
     }
   },
   watch: {
@@ -140,14 +150,18 @@ export default {
       this.menuName = ''
       this.menuIsShow = false
     },
-    handleChildMouseover ({child_img}) {
+    handleChildMouseover ({child_img, redirect}) {
       this.childImg = child_img
+      this.redirect = redirect
     },
     handleChangeDrowse (val) {
       this.drawer = val
     },
     handleSearchControl () {
       this.searchControl = !this.searchControl
+    },
+    handleSearch() {
+      this.$router.push({ path: '/searchResult', query: { keyWords: this.keyWords }})
     }
   },
 }

@@ -23,7 +23,8 @@
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "vue-awesome-swiper": "^3.1.3",
-    "vuetify": "^1.4.1"
+    "vuetify": "^1.4.1",
+    "vuetify-message": "^0.2.1"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",

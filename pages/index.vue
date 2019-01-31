@@ -15,33 +15,65 @@
       />
     </section>
     <!-- new column -->
-    <p class="display-1">{{ homeColumn.newColumn.title }}</p>
     <section class="new-column">
-      <PicturesContainer
-        v-for="(item, key) in homeColumn.newColumn.list" 
-        :key="key"
-        :link="item.url"
-        :title="item.product_name"
-        :image-shack="item.img"
-        bnt-type="but"
-      />
+      <v-layout 
+        row 
+        wrap>
+        <v-flex xs12>
+          <h2 class="ma-4 text-xs-center">{{ homeColumn.newColumn.title }}</h2>
+        </v-flex>
+        <v-flex 
+          v-for="(item, key) in homeColumn.newColumn.list" 
+          :key="key" 
+          xs12 
+          md4>
+          <PicturesContainer
+            :link="item.url"
+            :title="item.product_name"
+            :image-shack="item.img"
+            bnt-type="but"
+          />
+        </v-flex>
+      </v-layout>
     </section>
     <InstagramList
-      :instagram-list="instagram.slice(0,7)"
+      :instagram-list="$store.state.windowSize.x > 960 ? instagram.slice(0,7) : instagram.slice(0,6)"
     />
     <!-- social column -->
     <section class="social-column">
-      <PicturesContainer
-        v-for="(item, key) in homeColumn.socialColumn.list" 
-        :key="key"
-        :link="item.url"
-        :title="item.product_name"
-        :image-shack="item.img"
-        only-icon
-      />
+      <v-layout 
+        row 
+        wrap>
+        <v-flex xs12>
+          <h2 class="ma-4 text-xs-center">{{ homeColumn.socialColumn.title }}</h2>
+        </v-flex>
+        <v-layout 
+          row 
+          wrap>
+          <v-flex 
+            v-for="(item, key) in homeColumn.socialColumn.list" 
+            :key="key" 
+            md3
+            xs6>
+            <PicturesContainer
+              :link="item.url"
+              :title="item.product_name"
+              :image-shack="item.img"
+              only-icon
+            />
+          </v-flex>
+        </v-layout>
+      </v-layout>
+      
     </section>
     <!-- best sellers -->
     <section class="best-sellers">
+      <v-layout>
+        <v-flex xs12>
+          <h2 class="ma-5 text-xs-center">BEST SELLERS</h2>
+        </v-flex>
+      </v-layout>
+      
       <HomeProductCarousel
         :banners="bestSellersList"
       />
@@ -68,7 +100,8 @@ export default {
       instagram: []
     }
   },
-  async asyncData({ $axios }) {
+  async asyncData({ $axios, error }) {
+    try {
       const params = { code: 'H_1' }
       const { list } = await $axios.$get('/mall/home/banner', { params })
       const { data }  = await $axios.$get('/mall/home/homeColumn')
@@ -78,6 +111,10 @@ export default {
         homeColumn: data,
         bestSellersList: bestSellersList.list
       }
+    } catch (error) {
+      error({ statusCode: 505, message: 'Post not found' })
+    } 
+      
   },
   async mounted() {
     const instagram = await this.$axios.$get('/api/InstagramApi/instagram')
@@ -104,6 +141,5 @@ export default {
   .special-column, .new-column, .social-column
     flex-wrap wrap
   .social-column >>> .pictures-of-palmetto-leaves
-    width 50%
     margin-bottom 20px
 </style>

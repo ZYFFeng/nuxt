@@ -42,6 +42,7 @@ module.exports = {
   plugins: [
     '@/plugins/element-ui',
     '@/plugins/vuetify',
+    '@/plugins/vuetify-message',
     { src: '~/plugins/vue-awesome-swiper.js', ssr: false }
   ],
 
@@ -69,7 +70,7 @@ module.exports = {
 							component: resolve('pages/list.vue')
 						}	
 					]
-			}]
+			  }]
       })
     }
   },

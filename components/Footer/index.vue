@@ -47,8 +47,7 @@
                 <a 
                   v-else 
                   href="javascript:void(0)" 
-                  data-toggle="modal" 
-                  data-target="#goods-details-size">{{ children.name }}</a>
+                  @click="isShowDialog = true">{{ children.name }}</a>
               </li>
             </ul>
           </div>       
@@ -71,18 +70,26 @@
             </ul>
           </div>
         </div>
+        <size-chart 
+          :is-show-dialog="isShowDialog" 
+          @modifyStatus="value => isShowDialog = value"></size-chart>
       </div>		
     </div>
   </footer>
 </template>
 <script>
+import sizeChart from '@/components/SizeChart';
 export default {  
-  name:"Footer",
+	name:"Footer",
+	components: {
+		sizeChart
+	},
   data(){
     return{
       title: '',
 			footerData: {},
-			trackByDefault: true
+			trackByDefault: true,
+			isShowDialog: false
     }
   },
   async mounted() {

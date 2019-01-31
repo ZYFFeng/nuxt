@@ -12,8 +12,10 @@
           v-for="(banner, i) in banners"
           :key="i" 
           class="swiper-slide">
-          <img 
-            :src="$store.state.windowSize.x > 600 ? banner.img : banner.mobile_img">
+          <a :href="banner.url">
+            <img 
+              :src="$store.state.windowSize.x > 600 ? banner.img : banner.mobile_img">
+          </a>
         </div>
       </div>
       <div 
