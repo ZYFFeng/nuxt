@@ -84,7 +84,7 @@ export default {
 	components: {
 		sizeChart
 	},
-  data(){
+  data() {
     return{
       title: '',
 			footerData: {},
@@ -139,7 +139,7 @@ export default {
 }
 </script>
 <style lang="stylus" socped>
-li
+li 
 	list-style none
 .main-footer{
 	margin-top:80px

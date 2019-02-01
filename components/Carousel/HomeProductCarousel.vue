@@ -1,7 +1,9 @@
 <template>
   <section 
     v-if="$store.state.windowSize.x > 0" 
-    class="swiper-main-body">
+    :class="{'pa-5': $store.state.windowSize.x > 750 }"
+    class="swiper-main-body"
+  >
     <div 
       v-swiper:swiper="swiperOption" 
       ref="swiperBox" 
@@ -33,11 +35,11 @@
     </div>
     <div
       slot="button-prev"
-      class="swiper-button-prev"
+      class="swiper-button-prev hidden-xs-only"
     />
     <div
       slot="button-next"
-      class="swiper-button-next"
+      class="swiper-button-next hidden-xs-only"
     />
   </section>
 </template>
@@ -98,12 +100,14 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
+
 .swiper-main-body
   position relative
-  padding 0 66px
 .product
   display flex
   flex-direction column
+  font-size: 14px;
+  font-weight: 600;
 .product li
   text-align center
 .product-img

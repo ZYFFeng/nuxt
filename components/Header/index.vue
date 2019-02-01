@@ -58,12 +58,15 @@
         <div class="mobile-centre">
           <v-text-field
             v-if="searchControl"
+            v-model="keyWords"
             height="20px"
             label="SEARCH"
             style="box-shadow: none;"
             clearable
             solo
             append-icon="search"
+            @click:append="handleSearch"
+            @keyup.enter="handleSearch"
           /> 
           <nuxt-link 
             v-else 
@@ -161,7 +164,9 @@ export default {
       this.searchControl = !this.searchControl
     },
     handleSearch() {
-      this.$router.push({ path: '/searchResult', query: { keyWords: this.keyWords }})
+      if (this.keyWords !== '') {
+        this.$router.push({ path: '/searchResult', query: { keyWords: this.keyWords.trim() }})
+      }
     }
   },
 }
@@ -176,7 +181,7 @@ export default {
 .menu-bg
   background: rgba(0,0,0,.5);
   width: 100%;
-  height: calc(100vh - 150px);
+  height: calc(100vh + 550px);
   position: absolute;
   left: -1px;
   top: 150px;

@@ -22,10 +22,11 @@
               indeterminate 
               color="grey darken-3"></v-progress-circular>
           </v-layout>
-          <v-expand-transition v-if="!isDeals">
+          <v-expand-transition 
+            v-if="!isDeals" >
             <div
               v-if="hover"
-              class="d-flex transition-fast-in-fast-out v-card--reveal display-3"
+              class="d-flex transition-fast-in-fast-out v-card--reveal display-3 hidden-xs-only"
               style="height: 100%;"
             >
               <v-btn
@@ -42,9 +43,16 @@
       <v-card-title>
         <a 
           :href="navigation" 
+          :title="title" 
           :target="isDeals ? '_blank' : ''" >
-          <h6 class="title mb-2 text-xs-center card-brand">{{ brand }}</h6>
-          <p class="text-xs-center card-title">{{ title }}</p>
+          <h4 class="mb-2 text-xs-center card-brand">{{ brand }}</h4>
+          <div class="card-title-content">
+            <p 
+              class="text-xs-center card-title" 
+              style="-webkit-box-orient:vertical">
+              {{ title }}
+            </p>
+          </div>
           <p 
             v-if="!isDeals" 
             class="text-xs-center">{{ price }}</p>
@@ -144,14 +152,12 @@ export default {
       event.preventDefault()
       if (event.clipboardData) {
         event.clipboardData.setData('text/plain', this.dealCode)
-        console.log(event.clipboardData.getData('text'))
         this.$message({
           text: 'Copy the success!'
         })
       }
     },
     handleQuickView(event) {
-      console.log(123)
       this.$emit('handleQuickView', this.listStyle)
     }
   },
@@ -178,13 +184,18 @@ export default {
     margin 20%
     border-radius 0
 
-
+.card-title-content
+  height 5em
 .card-brand
   width 100%;
   text-align center
 .card-title
-  height 3em
-  overflow hidden
+  overflow  hidden
+  text-overflow ellipsis
+  display -webkit-box
+  -webkit-line-clamp 3
+  max-height 5em
+  font-size 14px
 .card-color
   margin 0 5px
   width 15px

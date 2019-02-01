@@ -25,21 +25,22 @@
         <v-icon class="icon-link elevation-5"> fab fa-facebook-f</v-icon>
       </template>
       <template v-else>
-        <h2 
+        <p 
           v-if="title" 
-          class="pictures-title">{{ title }}</h2>
+          class="pictures-title">{{ title }}</p>
         <p 
           v-if="discount" 
           class="text-xs-center">{{ discount }}</p>
         <v-btn 
           v-if="bntType !== 'text'"
           flat
+          class="mt-3"
           outline>
           <a :href="link">SHOP NOW</a>
         </v-btn>
         <v-btn 
           v-else 
-          class="bnt-border"
+          class="bnt-border "
           flat><a :href="link">SHOP NOW</a> </v-btn>
       </template>
     </div>

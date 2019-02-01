@@ -53,6 +53,7 @@
           <v-flex 
             v-for="(item, key) in homeColumn.socialColumn.list" 
             :key="key" 
+            class="mb-4"
             md3
             xs6>
             <PicturesContainer
@@ -64,7 +65,6 @@
           </v-flex>
         </v-layout>
       </v-layout>
-      
     </section>
     <!-- best sellers -->
     <section class="best-sellers">
@@ -100,19 +100,30 @@ export default {
       instagram: []
     }
   },
+  head () {
+    return {
+      title: this.seo.title,
+      meta: [
+        { hid: 'description', name: 'description',  content: this.seo.description },
+        { hid: 'keywords', name: 'keywords',  content: this.seo.keywords }
+      ]
+    }
+  },
   async asyncData({ $axios, error }) {
     try {
       const params = { code: 'H_1' }
       const { list } = await $axios.$get('/mall/home/banner', { params })
       const { data }  = await $axios.$get('/mall/home/homeColumn')
       const bestSellersList  = await $axios.$get('/api/NetworkApi/best_sellers')
+      const seo = await $axios.$get('/api/NetworkApi/indexSeo')
       return {
         bannerList: list, 
         homeColumn: data,
-        bestSellersList: bestSellersList.list
+        bestSellersList: bestSellersList.list,
+        seo
       }
     } catch (error) {
-      error({ statusCode: 505, message: 'Post not found' })
+      error({ statusCode: 505, message: e.message })
     } 
       
   },

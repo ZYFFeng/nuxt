@@ -226,12 +226,17 @@ export default {
     }
 
     const goodsListParams = {...Params, ...query}
+    const selfGoodListParams = Object.assign({},
+       { class_name : Params.category}, 
+       { page : Params.page}, 
+       { pageSize : Params.pageSize}, 
+       query)
     const { department } = goodsListParams
-
+    console.log(selfGoodListParams)
     try {
       const { resData, page, seo } = await $axios.$get(
-      '/api/NetworkApi/new_goods_list_by_property', 
-        { params: goodsListParams }
+      '/api/NetworkApi/self_goods_list', 
+        { params:  selfGoodListParams  }
       )
       const propertyResponse  = await $axios.$get(
         '/api/NetworkApi/property', 
@@ -342,10 +347,13 @@ export default {
         category: params.childName,
         class: params.className
       }
+      const selfGoodsListParams = Object.assign({}, {
+        class_name: goodsListParams.params.childName
+      }, query)
       const parameter = { ...goodsListParams, ...query }
       const { data: { resData, page } } = await this.$axios.get(
-        '/api/NetworkApi/new_goods_list_by_property', 
-        { params: parameter }
+        '/api/NetworkApi/self_goods_list', 
+        { params: selfGoodsListParams }
       ) 
       this.page = +query.page
       this.pageSize = +query.pageSize

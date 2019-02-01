@@ -9,8 +9,12 @@
       style="font-size:14px"
     >
       <v-spacer/>
-      <div>&copy;{{ $store.state.windowSize }}2014 - 2019 Dream Pair Shoes. All Rights Reserved.</div>
+      <div>&copy;2014 - 2019 Dream Pair Shoes. All Rights Reserved.</div>
     </v-footer>
+    <v-icon 
+      v-show="chevronUp" 
+      class="scroll-top" 
+      @click="handleScrollTop">fas fa-chevron-square-up</v-icon>
   </v-app>
 </template>
 <script>
@@ -22,12 +26,22 @@ export default {
     HeadNoption,
     Footer
   },
+  data () {
+    return {
+      chevronUp: false
+    }
+  },
   mounted () {
     this.onResize()
     window.onresize = throttle( _ => {
         this.onResize()
       }
     )
+    // document.body.onscroll = throttle( _ => {
+    //     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop 
+    //     scrollTop > 200 ? this.chevronUp = true : this.chevronUp = false
+    //   }
+    // )
   },
   methods: {
     onResize() {
@@ -35,11 +49,42 @@ export default {
         x: window.innerWidth, 
         y: window.innerHeight 
       })  
+    },
+    handleScrollTop() {
+      scrollTo(document.body, 0, 20000)
+    },
+    scrollTo(element, to, duration) {
+      console.log(123)
+      if (duration <= 0) return
+      var difference = to - element.scrollTop
+      var perTick = difference / duration * 10
+      setTimeout(() => {
+          console.log(element.scrollTop)
+          element.scrollTop = element.scrollTop + perTick
+          if (element.scrollTop === to) return
+          scrollTo(element, to, duration - 10)
+      }, 10)
     }
   }
 }
 </script>
 <style >
+.scroll-top{
+  position: fixed;
+  width: 33px;
+  height: 33px;
+  background: rgba(0,0,0,.8);
+  z-index: 10;
+  right: 14px;
+  bottom: 42px;
+  transition: .3s;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+}
+.text-gray{
+  color: #b9b9b9;
+}
 @font-face {
   font-family: MontserratRegular;
 	src:url('../assets/font/Montserrat-Regular.ttf');

@@ -5,19 +5,19 @@
     class="details-carousel"
   >
     <v-flex
-      md2
-      sm2
+      :md2="!isDialog"
+      :sm2="!isDialog"
+      :order-sm1="!isDialog"
+      order-xs2
       xs12
-      order-xs1
-      order-sm0
     >
       <div 
         slot="pagination" 
         class="swiper-pagination"/>
     </v-flex>
     <v-flex
-      order-xs0
-      order-sm1
+      :order-sm2="!isDialog"
+      order-xs1
       md10
       sm10
       xs12>
@@ -33,8 +33,8 @@
             class="swiper-slide">
             <v-img 
               :src="banner.amazon" 
-              contain
-              aspect-ratio="1.2">
+              :aspect-ratio="isDialog ? 1 : 1.2"
+              contain>
               <v-layout
                 slot="placeholder"
                 fill-height
@@ -61,6 +61,10 @@
       banner: {
         type: Array,
         default: () => []
+      },
+      isDialog: {
+        type: Boolean,
+        default:() => false
       }
     },
     data() {
@@ -74,7 +78,6 @@
             el:'.swiper-pagination',
             clickable:true,
             renderBullet: (i, cn) => {
-                console.log(i, cn)
                 return `<div class="${cn} thumbnail ma-1" >
                           <img class="img-responsive " src="${this.banner[i].amazon}" onerror="" />
                         </div>`

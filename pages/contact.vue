@@ -6,7 +6,7 @@
           <div class="col-sm-5">
             <div class="contact-img">
               <img 
-                :src="screenWidth < 768 ? require('../assets/img/contact-m.png') : require('../assets/img/contact.png')" 
+                :src="screenWidth < 768 ? require('../assets/img/contact-m.png') : require('../assets/img/contact.png')"
                 class="img-responsive center-block" />
             </div>
           </div>
